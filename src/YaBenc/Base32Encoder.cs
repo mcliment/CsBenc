@@ -1,40 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace YaBenc
 {
     public class Base32Encoder
     {
+        private readonly static int bits = 5;
+        private readonly static int basE = 1 << bits;
+
         private readonly static string _alphabet = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
         private readonly static string _checksums = "*~$=U";
-        private readonly static Dictionary<char, int> _equiv = new Dictionary<char, int> {
+        private readonly static Dictionary<char, byte> _equiv = new Dictionary<char, byte> {
             { 'I', 1 }, { 'i', 1 }, { 'L', 1 }, { 'l', 1 }, { 'O', 0 }, { 'o', 0 }
         };
 
-        private readonly static int bas = _alphabet.Length;
-        private readonly static int csBase = _alphabet.Length + _checksums.Length;
+        private readonly static int checksumBase = basE + _checksums.Length;
 
         public string Encode(ulong number, bool checksum = false)
         {
-            var result = "";
-
-            var next = number;
-
-            while (next > 0)
-            {
-                var rem = next % (ulong)bas;
-                next = next / (ulong)bas;
-
-                result = _alphabet[(int)rem] + result;
-            }
+            var chunks = GetChunks(number);
+            var chars = chunks.Select(c => _alphabet[c]).ToArray();
+            var result = new string(chars);
 
             if (checksum)
             {
-                var cs = (int)number % csBase;
-
-                var csc = cs > bas ? _checksums[bas - cs] : _alphabet[cs];
-
-                result += csc;
+                result += GetChecksum(number);
             }
 
             return result;
@@ -42,35 +34,86 @@ namespace YaBenc
 
         public ulong Decode(string encoded, bool checksum = false)
         {
-            ulong result = 0;
+            var values = GetValues(checksum ? encoded.Substring(0, encoded.Length - 1) : encoded).ToArray();
+            var result = SumValues(values);
 
-            // TODO :: Check values in range
-            var length = checksum ? encoded.Length - 1 : encoded.Length;
+            if (checksum)
+            {
+                var csc = GetChecksum(result);
 
-            for (var i = 0; i < length; i++)
+                if (csc != encoded[encoded.Length - 1])
+                {
+                    throw new Exception("Checksum mismatch");
+                }
+            }
+
+            return result;
+        }
+
+        private IEnumerable<byte> GetChunks(ulong number)
+        {
+            if (number == 0)
+            {
+                return new byte[] { 0 };
+            }
+
+            var chunks = YieldChunks(number);
+
+            return chunks.Reverse();
+        }
+
+        private IEnumerable<byte> YieldChunks(ulong number)
+        {
+            var next = number;
+
+            while (next > 0)
+            {
+                var rem = (byte)(next & (ulong)(basE - 1));
+                next = next >> bits;
+
+                yield return rem;
+            }
+        }
+
+        private char GetChecksum(ulong number)
+        {
+            var cs = (byte)(number % (ulong)checksumBase);
+
+            var csc = cs > basE ? _checksums[basE - cs] : _alphabet[cs];
+
+            return csc;
+        }
+
+        private IEnumerable<byte> GetValues(string encoded)
+        {
+            return YieldValues(encoded).Reverse();
+        }
+
+        private IEnumerable<byte> YieldValues(string encoded)
+        {
+            for (var i = 0; i < encoded.Length; i++)
             {
                 var curr = encoded[i];
-                var val = _alphabet.IndexOf(curr);
+                var val = (byte)_alphabet.IndexOf(curr); // TODO :: Explore alternatives
 
                 if (val < 0 && _equiv.ContainsKey(curr))
                 {
                     val = _equiv[curr];
                 }
 
-                // TODO :: Avoid pow, inverting stuff
-                result += (ulong)(Math.Pow(bas, length - i - 1) * val);
+                Debug.Assert(val >= 0);
+
+                yield return val;
             }
+        }
 
-            if (checksum)
+        private ulong SumValues(byte[] values)
+        {
+            ulong result = 0;
+
+            for (var i = 0; i < values.Length; i++)
             {
-                var cs = (int)result % csBase;
-
-                var csc = cs > bas ? _checksums[bas - cs] : _alphabet[cs];
-
-                if (csc != encoded[encoded.Length - 1])
-                {
-                    throw new Exception("Checksum mismatch");
-                }
+                result += (ulong)((1 << bits * i) * values[i]);
             }
 
             return result;

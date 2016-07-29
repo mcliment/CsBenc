@@ -10,7 +10,9 @@ namespace YaBenc.Tests
         {
             var encoder = new Base32Encoder();
 
+            Assert.AreEqual(encoder.Encode(0), "0");
             Assert.AreEqual(encoder.Encode(1234), "16J");
+            Assert.AreEqual(encoder.Encode(ulong.MaxValue), "FZZZZZZZZZZZZ");
         }
 
         [Test]
@@ -18,7 +20,9 @@ namespace YaBenc.Tests
         {
             var encoder = new Base32Encoder();
 
+            Assert.AreEqual(encoder.Encode(0, true), "00");
             Assert.AreEqual(encoder.Encode(1234, true), "16JD");
+            Assert.AreEqual(encoder.Encode(ulong.MaxValue, true), "FZZZZZZZZZZZZB");
         }
 
         [Test]
