@@ -34,7 +34,9 @@ namespace YaBenc
 
         public ulong Decode(string encoded, bool checksum = false)
         {
-            var values = GetValues(checksum ? encoded.Substring(0, encoded.Length - 1) : encoded).ToArray();
+            var clean = CleanInput(encoded);
+
+            var values = GetValues(checksum ? clean.Substring(0, clean.Length - 1) : clean).ToArray();
             var result = SumValues(values);
 
             if (checksum)
@@ -84,12 +86,21 @@ namespace YaBenc
             return csc;
         }
 
-        private IEnumerable<byte> GetValues(string encoded)
+        private string CleanInput(string input)
         {
-            return YieldValues(encoded).Reverse();
+            var upper = input.ToUpperInvariant();
+
+            if (upper.Contains('-'))
+            {
+                var good = upper.Where(c => c != '-').ToArray();
+
+                return new string(good);
+            }
+
+            return upper;
         }
 
-        private IEnumerable<byte> YieldValues(string encoded)
+        private IEnumerable<byte> GetValues(string encoded)
         {
             for (var i = 0; i < encoded.Length; i++)
             {
@@ -113,7 +124,7 @@ namespace YaBenc
 
             for (var i = 0; i < values.Length; i++)
             {
-                result += (ulong)((1 << bits * i) * values[i]);
+                result = (result << bits) + values[i];
             }
 
             return result;
