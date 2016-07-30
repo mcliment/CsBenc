@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace YaBenc
 {
-    public class Base32Encoder
+    public class CrockfordBase32Encoder
     {
         private readonly static int bits = 5;
         private readonly static int basE = 1 << bits;
