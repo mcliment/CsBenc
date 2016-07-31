@@ -7,20 +7,19 @@ namespace YaBenc
 {
     public class CrockfordBase32Encoder
     {
-        private readonly static int bits = 5;
-        private readonly static int basE = 1 << bits;
-
         private readonly static string _alphabet = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
         private readonly static string _checksums = "*~$=U";
         private readonly static Dictionary<char, byte> _equiv = new Dictionary<char, byte> {
             { 'I', 1 }, { 'i', 1 }, { 'L', 1 }, { 'l', 1 }, { 'O', 0 }, { 'o', 0 }
         };
 
-        private readonly static int checksumBase = basE + _checksums.Length;
+        private readonly static int wordSize = 5;
+        private readonly static int alphabetSize = _alphabet.Length;
+        private readonly static int checksumBase = alphabetSize + _checksums.Length;
 
         public string Encode(ulong number, bool checksum = false)
         {
-            var chunks = GetChunks(number);
+            var chunks = Chunker.GetChunks(number, wordSize);
             var chars = chunks.Select(c => _alphabet[c]).ToArray();
             var result = new string(chars);
 
@@ -36,8 +35,8 @@ namespace YaBenc
         {
             var clean = CleanInput(encoded);
 
-            var values = GetValues(checksum ? clean.Substring(0, clean.Length - 1) : clean).ToArray();
-            var result = SumValues(values);
+            var chunks = GetChunks(checksum ? clean.Substring(0, clean.Length - 1) : clean).ToArray();
+            var result = Combiner.Combine(chunks, wordSize);
 
             if (checksum)
             {
@@ -52,38 +51,13 @@ namespace YaBenc
             return result;
         }
 
-        private IEnumerable<byte> GetChunks(ulong number)
-        {
-            if (number == 0)
-            {
-                return new byte[] { 0 };
-            }
-
-            var chunks = YieldChunks(number);
-
-            return chunks.Reverse();
-        }
-
-        private IEnumerable<byte> YieldChunks(ulong number)
-        {
-            var next = number;
-
-            while (next > 0)
-            {
-                var rem = (byte)(next & (ulong)(basE - 1));
-                next = next >> bits;
-
-                yield return rem;
-            }
-        }
-
         private char GetChecksum(ulong number)
         {
-            var cs = (byte)(number % (ulong)checksumBase);
+            var checksum = (byte)(number % (ulong)checksumBase);
 
-            var csc = cs > basE ? _checksums[basE - cs] : _alphabet[cs];
+            var checksumChar = checksum > alphabetSize ? _checksums[alphabetSize - checksum] : _alphabet[checksum];
 
-            return csc;
+            return checksumChar;
         }
 
         private string CleanInput(string input)
@@ -100,34 +74,22 @@ namespace YaBenc
             return upper;
         }
 
-        private IEnumerable<byte> GetValues(string encoded)
+        private IEnumerable<byte> GetChunks(string encoded)
         {
             for (var i = 0; i < encoded.Length; i++)
             {
                 var curr = encoded[i];
-                var val = (byte)_alphabet.IndexOf(curr); // TODO :: Explore alternatives
+                var chunk = (byte)_alphabet.IndexOf(curr); // TODO :: Explore alternatives
 
-                if (val < 0 && _equiv.ContainsKey(curr))
+                if (chunk < 0 && _equiv.ContainsKey(curr))
                 {
-                    val = _equiv[curr];
+                    chunk = _equiv[curr];
                 }
 
-                Debug.Assert(val >= 0);
+                Debug.Assert(chunk >= 0);
 
-                yield return val;
+                yield return chunk;
             }
-        }
-
-        private ulong SumValues(byte[] values)
-        {
-            ulong result = 0;
-
-            for (var i = 0; i < values.Length; i++)
-            {
-                result = (result << bits) + values[i];
-            }
-
-            return result;
         }
     }
 }
