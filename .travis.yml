@@ -29,5 +29,5 @@ install:
 script:
 - dotnet restore
 - cd src/YaBenc/ && dotnet restore && dotnet build && cd -
-- cd test/YaBenc.Test/ && dotnet restore && dotnet build && cd -
-- cd test/YaBenc.Test/ && dotnet test && cd -
+- cd test/YaBenc.Tests/ && dotnet restore && dotnet build && cd -
+- cd test/YaBenc.Tests/ && dotnet test && cd -
