@@ -30,4 +30,4 @@ script:
 - dotnet restore
 - cd src/YaBenc/ && dotnet restore && dotnet build && cd -
 - cd test/YaBenc.Tests/ && dotnet restore && dotnet build && cd -
-- cd test/YaBenc.Tests/ && dotnet test && cd -
+- cd test/YaBenc.Tests/ && dotnet test -f netcoreapp1.0 && cd -
