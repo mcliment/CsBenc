@@ -52,8 +52,7 @@ namespace YaBenc.Tests
         }
 
         [Test]
-        [Explicit]
-        public void Random_Invert([Random(1000)] ulong input)
+        public void Random_Invert([Random(10)] ulong input)
         {
             var encoded = encoder.Encode(input);
             var decoded = encoder.Decode(encoded);

@@ -5,6 +5,18 @@ namespace YaBenc
 {
     public static class Chunker
     {
+        public static IEnumerable<byte> GetChunks(string value, int size)
+        {
+            if (size == 2)
+            {
+                foreach (byte c in value)
+                {
+                    yield return (byte)(c >> 4);
+                    yield return (byte)(c & 0xf);
+                }
+            }
+        }
+
         public static IEnumerable<byte> GetChunks(ulong number, int size)
         {
             if (number == 0)
