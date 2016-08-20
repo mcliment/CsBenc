@@ -7,7 +7,7 @@ namespace YaBenc
     {
         public static IEnumerable<byte> GetChunks(string value, int size)
         {
-            if (size == 2)
+            if (size == 4)
             {
                 foreach (byte c in value)
                 {

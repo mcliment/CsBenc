@@ -14,7 +14,7 @@ namespace YaBenc
 
         public string Encode(string value)
         {
-            var chunks = Chunker.GetChunks(value, 2);
+            var chunks = Chunker.GetChunks(value, bits);
             var chars = chunks.Select(c => _alphabet[c]).ToArray();
             var result = new string(chars);
 
@@ -35,7 +35,7 @@ namespace YaBenc
                 var l = _alphabet.IndexOf(input[i]);
                 var r = _alphabet.IndexOf(input[i + 1]);
 
-                yield return (char)((l << 4) + r);
+                yield return (char)((l << bits) + r);
             }
         }
         
