@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 
 namespace YaBenc.Tests
 {
@@ -10,45 +11,45 @@ namespace YaBenc.Tests
         [Test]
         public void Encodes()
         {
-            Assert.AreEqual(encoder.Encode(0), "0");
-            Assert.AreEqual(encoder.Encode(1234), "16J");
-            Assert.AreEqual(encoder.Encode(ulong.MaxValue), "FZZZZZZZZZZZZ");
+            encoder.Encode(0).ShouldBe("0");
+            encoder.Encode(1234).ShouldBe("16J");
+            encoder.Encode(ulong.MaxValue).ShouldBe("FZZZZZZZZZZZZ");
         }
 
         [Test]
         public void Encodes_With_Checksum()
         {
-            Assert.AreEqual(encoder.Encode(0, true), "00");
-            Assert.AreEqual(encoder.Encode(1234, true), "16JD");
-            Assert.AreEqual(encoder.Encode(ulong.MaxValue, true), "FZZZZZZZZZZZZB");
+            encoder.Encode(0, true).ShouldBe("00");
+            encoder.Encode(1234, true).ShouldBe("16JD");
+            encoder.Encode(ulong.MaxValue, true).ShouldBe("FZZZZZZZZZZZZB");
         }
 
         [Test]
         public void Decodes()
         {
-            Assert.AreEqual(encoder.Decode("0"), 0);
-            Assert.AreEqual(encoder.Decode("16J"), 1234);
-            Assert.AreEqual(encoder.Decode("FZZZZZZZZZZZZ"), ulong.MaxValue);
+            encoder.Decode("0").ShouldBe<ulong>(0);
+            encoder.Decode("16J").ShouldBe<ulong>(1234);
+            encoder.Decode("FZZZZZZZZZZZZ").ShouldBe(ulong.MaxValue);
         }
 
         [Test]
         public void Decodes_Lowercase()
         {
-            Assert.AreEqual(encoder.Decode("16j"), 1234);
-            Assert.AreEqual(encoder.Decode("fzzzzzzzzzzzz"), ulong.MaxValue);
+            encoder.Decode("16j").ShouldBe<ulong>(1234);
+            encoder.Decode("fzzzzzzzzzzzz").ShouldBe(ulong.MaxValue);
         }
 
         [Test]
         public void Decodes_With_Separator()
         {
-            Assert.AreEqual(encoder.Decode("16-J"), 1234);
-            Assert.AreEqual(encoder.Decode("FZZ-ZZZ-ZZZ-ZZZZ"), ulong.MaxValue);
+            encoder.Decode("16-J").ShouldBe<ulong>(1234);
+            encoder.Decode("FZZ-ZZZ-ZZZ-ZZZZ").ShouldBe(ulong.MaxValue);
         }
 
         [Test]
         public void Decodes_With_Checksum()
         {
-            Assert.AreEqual(encoder.Decode("16JD", true), 1234);
+            encoder.Decode("16JD", true).ShouldBe<ulong>(1234);
         }
 
         [Test]
@@ -57,7 +58,7 @@ namespace YaBenc.Tests
             var encoded = encoder.Encode(input);
             var decoded = encoder.Decode(encoded);
 
-            Assert.That(input, Is.EqualTo(decoded));
+            input.ShouldBe(decoded);
         }
     }
 }

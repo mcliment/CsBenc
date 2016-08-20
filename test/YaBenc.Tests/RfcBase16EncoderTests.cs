@@ -1,8 +1,6 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Shouldly;
+
 
 namespace YaBenc.Tests
 {
@@ -14,25 +12,25 @@ namespace YaBenc.Tests
         [Test]
         public void Encodes_Test_Vectors()
         {
-            Assert.AreEqual(encoder.Encode(""), "");
-            Assert.AreEqual(encoder.Encode("f"), "66");
-            Assert.AreEqual(encoder.Encode("fo"), "666F");
-            Assert.AreEqual(encoder.Encode("foo"), "666F6F");
-            Assert.AreEqual(encoder.Encode("foob"), "666F6F62");
-            Assert.AreEqual(encoder.Encode("fooba"), "666F6F6261");
-            Assert.AreEqual(encoder.Encode("foobar"), "666F6F626172");
+            encoder.Encode("").ShouldBe("");
+            encoder.Encode("f").ShouldBe("66");
+            encoder.Encode("fo").ShouldBe("666F");
+            encoder.Encode("foo").ShouldBe("666F6F");
+            encoder.Encode("foob").ShouldBe("666F6F62");
+            encoder.Encode("fooba").ShouldBe("666F6F6261");
+            encoder.Encode("foobar").ShouldBe("666F6F626172");
         }
 
         [Test]
         public void Decodes_Test_Vectors()
         {
-            Assert.AreEqual(encoder.Decode(""), "");
-            Assert.AreEqual(encoder.Decode("66"), "f");
-            Assert.AreEqual(encoder.Decode("666F"), "fo");
-            Assert.AreEqual(encoder.Decode("666F6F"), "foo");
-            Assert.AreEqual(encoder.Decode("666F6F62"), "foob");
-            Assert.AreEqual(encoder.Decode("666F6F6261"), "fooba");
-            Assert.AreEqual(encoder.Decode("666F6F626172"), "foobar");
+            encoder.Decode("").ShouldBe("");
+            encoder.Decode("66").ShouldBe("f");
+            encoder.Decode("666F").ShouldBe("fo");
+            encoder.Decode("666F6F").ShouldBe("foo");
+            encoder.Decode("666F6F62").ShouldBe("foob");
+            encoder.Decode("666F6F6261").ShouldBe("fooba");
+            encoder.Decode("666F6F626172").ShouldBe("foobar");
         }
     }
 }
