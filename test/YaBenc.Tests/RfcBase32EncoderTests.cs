@@ -20,16 +20,16 @@ namespace YaBenc.Tests
             encoder.Encode("foobar").ShouldBe("MZXW6YTBOI======");
         }
 
-        //[Test]
-        //public void Decodes_Test_Vectors()
-        //{
-        //    encoder.Decode("").ShouldBe("");
-        //    encoder.Decode("MY======").ShouldBe("f");
-        //    encoder.Decode("MZXQ====").ShouldBe("fo");
-        //    encoder.Decode("MZXW6===").ShouldBe("foo");
-        //    encoder.Decode("MZXW6YQ=").ShouldBe("foob");
-        //    encoder.Decode("MZXW6YTB").ShouldBe("fooba");
-        //    encoder.Decode("MZXW6YTBOI======").ShouldBe("foobar");
-        //}
+        [Test]
+        public void Decodes_Test_Vectors()
+        {
+            encoder.Decode("").ShouldBe("");
+            encoder.Decode("MY======").ShouldBe("f");
+            encoder.Decode("MZXQ====").ShouldBe("fo");
+            encoder.Decode("MZXW6===").ShouldBe("foo");
+            encoder.Decode("MZXW6YQ=").ShouldBe("foob");
+            encoder.Decode("MZXW6YTB").ShouldBe("fooba");
+            encoder.Decode("MZXW6YTBOI======").ShouldBe("foobar");
+        }
     }
 }

@@ -12,9 +12,11 @@ namespace YaBenc
 
         private readonly static string _alphabet = "0123456789ABCDEF";
 
+        private readonly static StringProcessor _processor = new StringProcessor(bits);
+
         public string Encode(string value)
         {
-            var chunks = Chunker.GetChunks(value, bits);
+            var chunks = _processor.Chunk(value);
             var chars = chunks.Select(c => _alphabet[c]).ToArray();
             var result = new string(chars);
 

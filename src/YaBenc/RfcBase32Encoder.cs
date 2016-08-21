@@ -13,36 +13,31 @@ namespace YaBenc
         private readonly static string _alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
         private readonly static char _pad = '=';
 
+        private readonly static StringProcessor _processor = new StringProcessor(bits);
+
         public string Encode(string value)
         {
-            var chunks = Chunker.GetChunks(value, bits);
+            var chunks = _processor.Chunk(value);
             var chars = chunks.Select(c => _alphabet[c]).ToArray();
-            var result = new string(chars);
-
-            while ((result.Length * bits % 8) != 0)
-            {
-                result += _pad;
-            }
+            var result = new string(_processor.Pad(chars, _pad));
 
             return result;
         }
 
         public string Decode(string input)
         {
-            var chars = GetChars(input).ToArray();
+            var chars = GetChars(input.TrimEnd(_pad)).ToArray();
 
             return new string(chars);
         }
 
         private IEnumerable<char> GetChars(string input)
         {
-            for (var i = 0; i < input.Length; i += 2)
-            {
-                var l = _alphabet.IndexOf(input[i]);
-                var r = _alphabet.IndexOf(input[i + 1]);
+            var values = input.TrimEnd(_pad).Select(i => _alphabet.IndexOf(i));
 
-                yield return (char)((l << bits) + r);
-            }
+            var result = _processor.Combine(values);
+
+            return result;
         }
         
     }
