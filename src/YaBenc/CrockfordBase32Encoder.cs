@@ -17,9 +17,11 @@ namespace YaBenc
         private readonly static int alphabetSize = _alphabet.Length;
         private readonly static int checksumBase = alphabetSize + _checksums.Length;
 
+        private readonly static NumberProcessor _processor = new NumberProcessor(wordSize);
+
         public string Encode(ulong number, bool checksum = false)
         {
-            var chunks = Chunker.GetChunks(number, wordSize);
+            var chunks = _processor.Chunk(number);
             var chars = chunks.Select(c => _alphabet[c]).ToArray();
             var result = new string(chars);
 
@@ -36,7 +38,7 @@ namespace YaBenc
             var clean = CleanInput(encoded);
 
             var chunks = GetChunks(checksum ? clean.Substring(0, clean.Length - 1) : clean).ToArray();
-            var result = Combiner.Combine(chunks, wordSize);
+            var result = _processor.Combine(chunks);
 
             if (checksum)
             {
