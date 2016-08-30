@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-
+using YaBenc.Strings;
 
 namespace YaBenc.Tests
 {

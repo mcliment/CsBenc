@@ -1,4 +1,4 @@
-﻿namespace YaBenc
+﻿namespace YaBenc.Strings
 {
     public class RfcBase32HexEncoder : StringEncoder
     {

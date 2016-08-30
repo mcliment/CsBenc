@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace YaBenc
+namespace YaBenc.Strings
 {
     public class StringProcessor
     {
