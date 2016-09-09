@@ -1,54 +1,61 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 
 namespace YaBenc
 {
-    public class NumberProcessor
+    public class NumberProcessor : INumberProcessor
     {
-        private readonly int _bitSize;
+        private readonly int _modulo;
 
-        public NumberProcessor(int bitSize)
+        private readonly INumberProcessor _wrapped;
+
+        public NumberProcessor(int modulo)
         {
-            _bitSize = bitSize;
+            if (modulo > byte.MaxValue)
+            {
+                throw new ArgumentOutOfRangeException("The base or modulo can't be larger than a byte", nameof(modulo));
+            }
+            
+            switch (modulo)
+            {
+                case 2:
+                    _wrapped = new PowerOfTwoNumberProcessor(1);
+                    break;
+                case 4:
+                    _wrapped = new PowerOfTwoNumberProcessor(2);
+                    break;
+                case 8:
+                    _wrapped = new PowerOfTwoNumberProcessor(3);
+                    break;
+                case 16:
+                    _wrapped = new PowerOfTwoNumberProcessor(4);
+                    break;
+                case 32:
+                    _wrapped = new PowerOfTwoNumberProcessor(5);
+                    break;
+                case 64:
+                    _wrapped = new PowerOfTwoNumberProcessor(6);
+                    break;
+                case 128:
+                    _wrapped = new PowerOfTwoNumberProcessor(7);
+                    break;
+                case 256:
+                    _wrapped = new PowerOfTwoNumberProcessor(8);
+                    break;
+                default:
+                    _wrapped = new ArbitraryNumberProcessor(modulo);
+                    break;
+            }
         }
 
         public IEnumerable<byte> Chunk(ulong number)
         {
-            if (number == 0)
-            {
-                return new byte[] { 0 };
-            }
-
-            var chunks = YieldChunks(number);
-
-            return chunks.Reverse();
+            return _wrapped.Chunk(number);
         }
 
         public ulong Combine(byte[] chunks)
         {
-            ulong result = 0;
-
-            for (var i = 0; i < chunks.Length; i++)
-            {
-                result = (result << _bitSize) + chunks[i];
-            }
-
-            return result;
-        }
-
-        private IEnumerable<byte> YieldChunks(ulong number)
-        {
-            var divider = (ulong)(1 << _bitSize) - 1;
-
-            var next = number;
-
-            while (next > 0)
-            {
-                var rem = (byte)(next & divider); // remainder
-                next = next >> _bitSize; // division
-
-                yield return rem;
-            }
+            return _wrapped.Combine(chunks);
         }
     }
 }

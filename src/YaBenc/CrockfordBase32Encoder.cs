@@ -13,11 +13,10 @@ namespace YaBenc
             { 'I', 1 }, { 'i', 1 }, { 'L', 1 }, { 'l', 1 }, { 'O', 0 }, { 'o', 0 }
         };
 
-        private readonly static int wordSize = 5;
         private readonly static int alphabetSize = _alphabet.Length;
         private readonly static int checksumBase = alphabetSize + _checksums.Length;
 
-        private readonly static NumberProcessor _processor = new NumberProcessor(wordSize);
+        private readonly static NumberProcessor _processor = new NumberProcessor(alphabetSize);
 
         public string Encode(ulong number, bool checksum = false)
         {

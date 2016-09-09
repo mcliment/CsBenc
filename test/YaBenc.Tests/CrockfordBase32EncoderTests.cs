@@ -3,6 +3,7 @@ using Shouldly;
 
 namespace YaBenc.Tests
 {
+
     [TestFixture]
     public class CrockfordBase32EncoderTests
     {
