@@ -4,6 +4,7 @@ using Shouldly;
 namespace YaBenc.Tests
 {
     [TestFixture]
+    [Parallelizable]
     public class Base58EncoderTests
     {
         private readonly Base58Encoder encoder = new Base58Encoder();

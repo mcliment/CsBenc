@@ -5,32 +5,33 @@ using YaBenc.Strings;
 namespace YaBenc.Tests
 {
     [TestFixture]
+    [Parallelizable]
     public class RfcBase64EncoderTests
     {
         private readonly RfcBase64Encoder encoder = new RfcBase64Encoder();
 
-        [Test]
-        public void Encodes_Test_Vectors()
+        [TestCase("", "")]
+        [TestCase("f", "Zg==")]
+        [TestCase("fo", "Zm8=")]
+        [TestCase("foo", "Zm9v")]
+        [TestCase("foob", "Zm9vYg==")]
+        [TestCase("fooba", "Zm9vYmE=")]
+        [TestCase("foobar", "Zm9vYmFy")]
+        public void Encodes_Test_Vectors(string input, string encoded)
         {
-            encoder.Encode("").ShouldBe("");
-            encoder.Encode("f").ShouldBe("Zg==");
-            encoder.Encode("fo").ShouldBe("Zm8=");
-            encoder.Encode("foo").ShouldBe("Zm9v");
-            encoder.Encode("foob").ShouldBe("Zm9vYg==");
-            encoder.Encode("fooba").ShouldBe("Zm9vYmE=");
-            encoder.Encode("foobar").ShouldBe("Zm9vYmFy");
+            encoder.Encode(input).ShouldBe(encoded);
         }
 
-        [Test]
-        public void Decodes_Test_Vectors()
+        [TestCase("", "")]
+        [TestCase("Zg==", "f")]
+        [TestCase("Zm8=", "fo")]
+        [TestCase("Zm9v", "foo")]
+        [TestCase("Zm9vYg==", "foob")]
+        [TestCase("Zm9vYmE=", "fooba")]
+        [TestCase("Zm9vYmFy", "foobar")]
+        public void Decodes_Test_Vectors(string encoded, string output)
         {
-            encoder.Decode("").ShouldBe("");
-            encoder.Decode("Zg==").ShouldBe("f");
-            encoder.Decode("Zm8=").ShouldBe("fo");
-            encoder.Decode("Zm9v").ShouldBe("foo");
-            encoder.Decode("Zm9vYg==").ShouldBe("foob");
-            encoder.Decode("Zm9vYmE=").ShouldBe("fooba");
-            encoder.Decode("Zm9vYmFy").ShouldBe("foobar");
+            encoder.Decode(encoded).ShouldBe(output);
         }
     }
 }

@@ -5,32 +5,33 @@ using YaBenc.Strings;
 namespace YaBenc.Tests
 {
     [TestFixture]
+    [Parallelizable]
     public class RfcBase32HexEncoderTests
     {
         private readonly RfcBase32HexEncoder encoder = new RfcBase32HexEncoder();
 
-        [Test]
-        public void Encodes_Test_Vectors()
+        [TestCase("", "")]
+        [TestCase("f", "CO======")]
+        [TestCase("fo", "CPNG====")]
+        [TestCase("foo", "CPNMU===")]
+        [TestCase("foob", "CPNMUOG=")]
+        [TestCase("fooba", "CPNMUOJ1")]
+        [TestCase("foobar", "CPNMUOJ1E8======")]
+        public void Encodes_Test_Vectors(string input, string encoded)
         {
-            encoder.Encode("").ShouldBe("");
-            encoder.Encode("f").ShouldBe("CO======");
-            encoder.Encode("fo").ShouldBe("CPNG====");
-            encoder.Encode("foo").ShouldBe("CPNMU===");
-            encoder.Encode("foob").ShouldBe("CPNMUOG=");
-            encoder.Encode("fooba").ShouldBe("CPNMUOJ1");
-            encoder.Encode("foobar").ShouldBe("CPNMUOJ1E8======");
+            encoder.Encode(input).ShouldBe(encoded);
         }
 
-        [Test]
-        public void Decodes_Test_Vectors()
+        [TestCase("", "")]
+        [TestCase("CO======", "f")]
+        [TestCase("CPNG====", "fo")]
+        [TestCase("CPNMU===", "foo")]
+        [TestCase("CPNMUOG=", "foob")]
+        [TestCase("CPNMUOJ1", "fooba")]
+        [TestCase("CPNMUOJ1E8======", "foobar")]
+        public void Decodes_Test_Vectors(string encoded, string output)
         {
-            encoder.Decode("").ShouldBe("");
-            encoder.Decode("CO======").ShouldBe("f");
-            encoder.Decode("CPNG====").ShouldBe("fo");
-            encoder.Decode("CPNMU===").ShouldBe("foo");
-            encoder.Decode("CPNMUOG=").ShouldBe("foob");
-            encoder.Decode("CPNMUOJ1").ShouldBe("fooba");
-            encoder.Decode("CPNMUOJ1E8======").ShouldBe("foobar");
+            encoder.Decode(encoded).ShouldBe(output);
         }
     }
 }

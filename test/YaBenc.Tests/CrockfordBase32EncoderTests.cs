@@ -3,54 +3,55 @@ using Shouldly;
 
 namespace YaBenc.Tests
 {
-
     [TestFixture]
+    [Parallelizable]
     public class CrockfordBase32EncoderTests
     {
         private readonly CrockfordBase32Encoder encoder = new CrockfordBase32Encoder();
 
-        [Test]
-        public void Encodes()
+        [TestCase(0UL, "0")]
+        [TestCase(1234UL, "16J")]
+        [TestCase(ulong.MaxValue, "FZZZZZZZZZZZZ")]
+        public void Encodes(ulong value, string encoded)
         {
-            encoder.Encode(0).ShouldBe("0");
-            encoder.Encode(1234).ShouldBe("16J");
-            encoder.Encode(ulong.MaxValue).ShouldBe("FZZZZZZZZZZZZ");
+            encoder.Encode(value).ShouldBe(encoded);
         }
 
-        [Test]
-        public void Encodes_With_Checksum()
+        [TestCase(0UL, "00")]
+        [TestCase(1234UL, "16JD")]
+        [TestCase(ulong.MaxValue, "FZZZZZZZZZZZZB")]
+        public void Encodes_With_Checksum(ulong value, string encoded)
         {
-            encoder.Encode(0, true).ShouldBe("00");
-            encoder.Encode(1234, true).ShouldBe("16JD");
-            encoder.Encode(ulong.MaxValue, true).ShouldBe("FZZZZZZZZZZZZB");
+            encoder.Encode(value, true).ShouldBe(encoded);
         }
 
-        [Test]
-        public void Decodes()
+        [TestCase("0", 0UL)]
+        [TestCase("16J", 1234UL)]
+        [TestCase("FZZZZZZZZZZZZ", ulong.MaxValue)]
+        public void Decodes(string encoded, ulong decoded)
         {
-            encoder.Decode("0").ShouldBe<ulong>(0);
-            encoder.Decode("16J").ShouldBe<ulong>(1234);
-            encoder.Decode("FZZZZZZZZZZZZ").ShouldBe(ulong.MaxValue);
+            encoder.Decode(encoded).ShouldBe(decoded);
         }
 
-        [Test]
-        public void Decodes_Lowercase()
+        [TestCase("16j", 1234UL)]
+        [TestCase("fzzzzzzzzzzzz", ulong.MaxValue)]
+        public void Decodes_Lowercase(string encoded, ulong decoded)
         {
-            encoder.Decode("16j").ShouldBe<ulong>(1234);
-            encoder.Decode("fzzzzzzzzzzzz").ShouldBe(ulong.MaxValue);
+            encoder.Decode(encoded).ShouldBe(decoded);
         }
 
-        [Test]
-        public void Decodes_With_Separator()
+        [TestCase("16-J", 1234UL)]
+        [TestCase("FZZ-ZZZ-ZZZ-ZZZZ", ulong.MaxValue)]
+        public void Decodes_With_Separator(string encoded, ulong decoded)
         {
-            encoder.Decode("16-J").ShouldBe<ulong>(1234);
-            encoder.Decode("FZZ-ZZZ-ZZZ-ZZZZ").ShouldBe(ulong.MaxValue);
+            encoder.Decode(encoded).ShouldBe(decoded);
         }
 
-        [Test]
-        public void Decodes_With_Checksum()
+        [TestCase("16JD", 1234UL)]
+        [TestCase("FZZZZZZZZZZZZB", ulong.MaxValue)]
+        public void Decodes_With_Checksum(string encoded, ulong decoded)
         {
-            encoder.Decode("16JD", true).ShouldBe<ulong>(1234);
+            encoder.Decode(encoded, true).ShouldBe(decoded);
         }
 
         [Test]
