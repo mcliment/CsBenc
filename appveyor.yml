@@ -6,3 +6,10 @@ before_build:
     dotnet restore
 build:
   verbosity: minimal
+test_script:
+- cmd: >-
+    pushd test\CsBenc.Tests\
+
+    dotnet test
+
+    popd
