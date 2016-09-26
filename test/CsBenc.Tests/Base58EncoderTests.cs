@@ -19,5 +19,16 @@ namespace CsBenc.Tests
         {
             encoder.Encode(input).ShouldBe(output);
         }
+
+        [TestCase("1", 0UL)]
+        [TestCase("z", 57UL)]
+        [TestCase("21", 58UL)]
+        [TestCase("Ldp", 66051UL)]
+        [TestCase("2vgLdhi", 73300775185UL)]
+        [TestCase("3CSwN61PP", 281401388481450UL)]
+        public void Decodes(string encoded, ulong output)
+        {
+            encoder.Decode(encoded).ShouldBe(output);
+        }
     }
 }
