@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace CsBenc
+namespace CsBenc.Impl
 {
-    public class ArbitraryNumberProcessor : INumberProcessor
+    internal class PowerOfTwoNumberProcessor : INumberProcessor
     {
-        private readonly int _modulo;
+        private readonly int _power;
 
-        public ArbitraryNumberProcessor(int modulo)
+        public PowerOfTwoNumberProcessor(int power)
         {
-            _modulo = modulo;
+            _power = power;
         }
 
         public IEnumerable<byte> Chunk(ulong number)
@@ -30,7 +30,7 @@ namespace CsBenc
 
             for (var i = 0; i < chunks.Length; i++)
             {
-                result = (result * (ulong)_modulo) + chunks[i];
+                result = (result << _power) + chunks[i];
             }
 
             return result;
@@ -38,14 +38,16 @@ namespace CsBenc
 
         private IEnumerable<byte> YieldChunks(ulong number)
         {
+            var divider = (ulong)(1 << _power) - 1;
+
             var next = number;
 
             while (next > 0)
             {
-                var rem = next % (ulong)_modulo; // remainder
-                next = next / (ulong)_modulo; // division
+                var rem = (byte)(next & divider); // remainder
+                next = next >> _power; // division
 
-                yield return (byte)rem;
+                yield return rem;
             }
         }
     }

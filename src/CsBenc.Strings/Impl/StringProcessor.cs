@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace CsBenc.Strings
+namespace CsBenc.Strings.Impl
 {
-    public class StringProcessor
+    internal class StringProcessor
     {
         private const int byteSize = 8;
         private readonly int _size;
@@ -23,7 +23,7 @@ namespace CsBenc.Strings
             // Simple case for base16 (no padding)
             if (_size == 4)
             {
-                foreach (byte ch in value)
+                foreach (var ch in value)
                 {
                     yield return (byte)(ch >> 4);
                     yield return (byte)(ch & 0xf);
@@ -100,7 +100,7 @@ namespace CsBenc.Strings
             var mask = (1 << byteSize) - 1;
 
             var i = 0;
-            int dec = 0;
+            int dec;
             var ch = 0;
 
             while (rem > 0)
@@ -131,6 +131,5 @@ namespace CsBenc.Strings
                 }
             }
         }
-
     }
 }

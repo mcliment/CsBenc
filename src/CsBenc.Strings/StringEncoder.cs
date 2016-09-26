@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using CsBenc.Strings.Impl;
 
 namespace CsBenc.Strings
 {
@@ -8,7 +9,6 @@ namespace CsBenc.Strings
     {
         private readonly string _alphabet;
         private readonly char _pad;
-        private readonly int _bits;
 
         private readonly StringProcessor _processor;
 
@@ -17,10 +17,10 @@ namespace CsBenc.Strings
             _pad = pad;
             _alphabet = alphabet;
 
-            _bits = CountBits(_alphabet.Length);
-            _processor = new StringProcessor(_bits);
+            var bits = CountBits(_alphabet.Length);
+            _processor = new StringProcessor(bits);
 
-            Debug.Assert(1 << _bits == _alphabet.Length);
+            Debug.Assert(1 << bits == _alphabet.Length);
         }
 
         public string Encode(string value)

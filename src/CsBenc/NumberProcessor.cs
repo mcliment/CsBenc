@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using CsBenc.Impl;
 
 namespace CsBenc
 {
     public class NumberProcessor : INumberProcessor
     {
-        private readonly int _modulo;
-
         private readonly INumberProcessor _wrapped;
 
         public NumberProcessor(int modulo)
