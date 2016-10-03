@@ -8,7 +8,7 @@ namespace CsBenc.Tests
     [Parallelizable]
     public class RfcBase16EncoderTests
     {
-        private readonly RfcBase16Encoder encoder = new RfcBase16Encoder();
+        private readonly StringEncoder encoder = Encoder.RfcBase16();
 
         [TestCase("", "")]
         [TestCase("f", "66")]

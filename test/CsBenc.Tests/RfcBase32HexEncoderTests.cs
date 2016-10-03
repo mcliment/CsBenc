@@ -8,7 +8,7 @@ namespace CsBenc.Tests
     [Parallelizable]
     public class RfcBase32HexEncoderTests
     {
-        private readonly RfcBase32HexEncoder encoder = new RfcBase32HexEncoder();
+        private readonly StringEncoder encoder = Encoder.RfcBase32Hex();
 
         [TestCase("", "")]
         [TestCase("f", "CO======")]
