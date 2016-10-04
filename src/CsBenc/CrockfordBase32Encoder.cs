@@ -1,64 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace CsBenc
 {
-    public class CrockfordBase32Encoder
+    public class CrockfordBase32Encoder : ChecksumEncoder
     {
-        private readonly static string _alphabet = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
-        private readonly static string _checksums = "*~$=U";
         private readonly static Dictionary<char, byte> _equiv = new Dictionary<char, byte> {
             { 'I', 1 }, { 'i', 1 }, { 'L', 1 }, { 'l', 1 }, { 'O', 0 }, { 'o', 0 }
         };
 
-        private readonly static int alphabetSize = _alphabet.Length;
-        private readonly static int checksumBase = alphabetSize + _checksums.Length;
-
-        private readonly static NumberProcessor _processor = new NumberProcessor(alphabetSize);
-
-        public string Encode(ulong number, bool checksum = false)
+        public CrockfordBase32Encoder() : base("0123456789ABCDEFGHJKMNPQRSTVWXYZ", "*~$=U")
         {
-            var chunks = _processor.Chunk(number);
-            var chars = chunks.Select(c => _alphabet[c]).ToArray();
-            var result = new string(chars);
-
-            if (checksum)
-            {
-                result += GetChecksum(number);
-            }
-
-            return result;
         }
 
-        public ulong Decode(string encoded, bool checksum = false)
+        public override ulong Decode(string encoded, bool checksum)
         {
-            var clean = CleanInput(encoded);
+            var clean = Translate(CleanInput(encoded));
 
-            var chunks = GetChunks(checksum ? clean.Substring(0, clean.Length - 1) : clean).ToArray();
-            var result = _processor.Combine(chunks);
-
-            if (checksum)
-            {
-                var csc = GetChecksum(result);
-
-                if (csc != encoded[encoded.Length - 1])
-                {
-                    throw new Exception("Checksum mismatch");
-                }
-            }
-
-            return result;
-        }
-
-        private char GetChecksum(ulong number)
-        {
-            var checksum = (byte)(number % (ulong)checksumBase);
-
-            var checksumChar = checksum > alphabetSize ? _checksums[alphabetSize - checksum] : _alphabet[checksum];
-
-            return checksumChar;
+            return base.Decode(clean, checksum);
         }
 
         private string CleanInput(string input)
@@ -67,30 +26,22 @@ namespace CsBenc
 
             if (upper.Contains('-'))
             {
-                var good = upper.Where(c => c != '-').ToArray();
+                var noHyphens = upper.Where(c => c != '-').ToArray();
 
-                return new string(good);
+                return new string(noHyphens);
             }
 
             return upper;
         }
 
-        private IEnumerable<byte> GetChunks(string encoded)
+        private string Translate(string input)
         {
-            for (var i = 0; i < encoded.Length; i++)
+            var translated = input.Select(c =>
             {
-                var curr = encoded[i];
-                var chunk = (byte)_alphabet.IndexOf(curr); // TODO :: Explore alternatives
+                return _equiv.ContainsKey(c) ? (char)_equiv[c] : c;
+            });
 
-                if (chunk < 0 && _equiv.ContainsKey(curr))
-                {
-                    chunk = _equiv[curr];
-                }
-
-                Debug.Assert(chunk >= 0);
-
-                yield return chunk;
-            }
+            return new string(translated.ToArray());
         }
     }
 }

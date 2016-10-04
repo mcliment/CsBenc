@@ -14,8 +14,6 @@ namespace CsBenc.Strings
 
         public StringEncoder(string alphabet, char pad)
         {
-            System.Console.WriteLine($"Initializing {alphabet} / {pad}");
-
             _pad = pad;
             _alphabet = alphabet;
 

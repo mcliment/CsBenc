@@ -1,18 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
 namespace CsBenc
 {
-    public class Base58Encoder
+    public class SimpleEncoder
     {
-        private readonly static string _alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+        private readonly string _alphabet;
+        private readonly NumberProcessor _processor;
 
-        private readonly static int bits = 58;
-        private readonly static NumberProcessor _processor = new NumberProcessor(bits);
+        public SimpleEncoder(string alphabet)
+        {
+            _alphabet = alphabet;
+            _processor = new NumberProcessor(alphabet.Length);
+        }
 
-        public string Encode(ulong number /*, bool checksum = false */)
+        protected string Alphabet { get { return _alphabet; } }
+
+        protected NumberProcessor Processor { get { return _processor; } }
+
+        public virtual string Encode(ulong number)
         {
             var chunks = _processor.Chunk(number);
             var chars = chunks.Select(c => _alphabet[c]).ToArray();
@@ -21,7 +28,7 @@ namespace CsBenc
             return result;
         }
 
-        public ulong Decode(string encoded/*, bool checksum = false*/)
+        public virtual ulong Decode(string encoded)
         {
             var chunks = GetChunks(encoded);
             var result = _processor.Combine(chunks.ToArray());
@@ -29,7 +36,7 @@ namespace CsBenc
             return result;
         }
 
-        private IEnumerable<byte> GetChunks(string encoded)
+        protected virtual IEnumerable<byte> GetChunks(string encoded)
         {
             for (var i = 0; i < encoded.Length; i++)
             {

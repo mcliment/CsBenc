@@ -7,7 +7,7 @@ namespace CsBenc.Tests
     [Parallelizable]
     public class Base58EncoderTests
     {
-        private readonly Base58Encoder encoder = new Base58Encoder();
+        private readonly SimpleEncoder encoder = Encoder.Base58();
 
         [TestCase(0UL, "1")]
         [TestCase(57UL, "z")]

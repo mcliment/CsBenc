@@ -7,7 +7,7 @@ namespace CsBenc.Tests
     [Parallelizable]
     public class CrockfordBase32EncoderTests
     {
-        private readonly CrockfordBase32Encoder encoder = new CrockfordBase32Encoder();
+        private readonly ChecksumEncoder encoder = Encoder.CrockfordBase32();
 
         [TestCase(0UL, "0")]
         [TestCase(1234UL, "16J")]
