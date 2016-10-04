@@ -8,7 +8,7 @@ namespace CsBenc.Tests
     [Parallelizable]
     public class RfcBase64EncoderTests
     {
-        private readonly StringEncoder encoder = Encoder.Base64();
+        private readonly StringEncoder encoder = Strings.Encoder.RfcBase64();
 
         [TestCase("", "")]
         [TestCase("f", "Zg==")]
