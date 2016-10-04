@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CsBenc.Strings.Impl
@@ -17,13 +18,18 @@ namespace CsBenc.Strings.Impl
         {
             if (string.IsNullOrEmpty(value))
             {
-                yield break;
+                return Enumerable.Empty<byte>();
             }
 
+            return Chunk(System.Text.Encoding.UTF8.GetBytes(value));
+        }
+
+        public IEnumerable<byte> Chunk(byte[] value)
+        {
             // Simple case for base16 (no padding)
             if (_size == 4)
             {
-                foreach (var ch in value)
+                foreach (byte ch in value)
                 {
                     yield return (byte)(ch >> 4);
                     yield return (byte)(ch & 0xf);
@@ -87,7 +93,7 @@ namespace CsBenc.Strings.Impl
             return cs;
         }
 
-        public IEnumerable<char> Combine(IEnumerable<int> decoded)
+        public IEnumerable<byte> Combine(IEnumerable<int> decoded)
         {
             var decs = decoded.ToArray();
             
@@ -123,7 +129,7 @@ namespace CsBenc.Strings.Impl
                     var disp = _size - rem;
                     ch = (ch | (dec >> disp)) & mask;
 
-                    yield return (char)ch;
+                    yield return (byte)ch;
 
                     rem = byteSize - disp;
 

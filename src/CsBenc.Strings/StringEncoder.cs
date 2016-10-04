@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using CsBenc.Strings.Impl;
 
 namespace CsBenc.Strings
@@ -32,14 +33,26 @@ namespace CsBenc.Strings
             return result;
         }
 
-        public string Decode(string input)
+        public string Encode(byte[] input)
         {
-            var chars = GetChars(input.TrimEnd(_pad)).ToArray();
+            var chunks = _processor.Chunk(input);
+            var chars = chunks.Select(c => _alphabet[c]).ToArray();
+            var result = new string(_processor.Pad(chars, _pad));
 
-            return new string(chars);
+            return result;
         }
 
-        private IEnumerable<char> GetChars(string input)
+        public string Decode(string input)
+        {
+            return Encoding.UTF8.GetString(DecodeBytes(input));
+        }
+
+        public byte[] DecodeBytes(string input)
+        {
+            return GetBytes(input.TrimEnd(_pad)).ToArray();
+        }
+
+        private IEnumerable<byte> GetBytes(string input)
         {
             var values = input.TrimEnd(_pad).Select(i => _alphabet.IndexOf(i));
 
