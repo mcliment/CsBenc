@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "debugType": "portable",
+    "emitEntryPoint": true,
+    "compilerName": "fsc",
+    "compile": {
+      "includeFiles": [
+        "Program.fs"
+      ]
+    }
+  },
+  "dependencies": {
+    "CsBenc": "*",
+    "CsBenc.Strings": "*",
+    "BenchmarkDotNet": "0.9.9"
+  },
+  "tools": {
+    "dotnet-compile-fsc":"1.0.0-preview2-*"
+  },
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.1"
+        },
+        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160629"
+      }
+    },
+    "net451": {}
+  }
+}
