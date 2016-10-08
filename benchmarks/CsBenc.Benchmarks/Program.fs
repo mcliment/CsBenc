@@ -18,7 +18,7 @@ type Base64Comparison () =
         data <- Array.zeroCreate<byte> N
         (new Random(42)).NextBytes(data)
 
-    [<Benchmark>]
+    [<Benchmark(Baseline = true)>]
     member self.NetBase64 () = System.Convert.ToBase64String(data)
 
     [<Benchmark>]

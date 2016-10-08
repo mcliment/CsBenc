@@ -28,6 +28,11 @@
         "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160629"
       }
     },
-    "net451": {}
+    "net451": {
+      "dependencies": {
+        "BenchmarkDotNet.Diagnostics.Windows": "0.9.9",
+        "FSharp.Core": "4.0.1.5"
+      }
+    }
   }
 }
