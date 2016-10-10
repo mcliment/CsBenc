@@ -26,17 +26,24 @@ namespace CsBenc.Strings
 
         public string Encode(string value)
         {
-            var chunks = _processor.Chunk(value);
-            var chars = chunks.Select(c => _alphabet[c]).ToArray();
-            var result = new string(_processor.Pad(chars, _pad));
-
-            return result;
+            return EncodeChunks(_processor.Chunk(value));
         }
 
         public string Encode(byte[] input)
         {
-            var chunks = _processor.Chunk(input);
-            var chars = chunks.Select(c => _alphabet[c]).ToArray();
+            return EncodeChunks(_processor.Chunk(input));
+        }
+
+        private string EncodeChunks(IEnumerable<byte> chunks)
+        {
+            var array = chunks.ToArray();
+            var chars = new char[array.Length];
+
+            for (var i = 0; i < array.Length; i++)
+            {
+                chars[i] = _alphabet[array[i]];
+            }
+
             var result = new string(_processor.Pad(chars, _pad));
 
             return result;
