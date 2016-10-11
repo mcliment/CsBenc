@@ -6,6 +6,9 @@ using CsBenc.Internals;
 
 namespace CsBenc.Encoders
 {
+    /// <summary>
+    /// An encoder that allows the encoding of streams and strings.
+    /// </summary>
     public class StringEncoder
     {
         private readonly string _alphabet;
@@ -13,6 +16,11 @@ namespace CsBenc.Encoders
 
         private readonly StringProcessor _processor;
 
+        /// <summary>
+        /// Creates a new instance of this encoder with the specified alphabet and padding character.
+        /// </summary>
+        /// <param name="alphabet">Alphabet to use by this encoder</param>
+        /// <param name="pad">Padding character</param>
         public StringEncoder(string alphabet, char pad)
         {
             _pad = pad;
@@ -24,11 +32,21 @@ namespace CsBenc.Encoders
             Debug.Assert(1 << bits == _alphabet.Length);
         }
 
+        /// <summary>
+        /// Encode the specified string with this encoder.
+        /// </summary>
+        /// <param name="value">String to encode</param>
+        /// <returns>Encoded string</returns>
         public string Encode(string value)
         {
             return EncodeChunks(_processor.Chunk(value));
         }
 
+        /// <summary>
+        /// Encode the bytes to its string encoding.
+        /// </summary>
+        /// <param name="input">Array of bytes to encode</param>
+        /// <returns>Encoded string</returns>
         public string Encode(byte[] input)
         {
             return EncodeChunks(_processor.Chunk(input));
@@ -49,11 +67,21 @@ namespace CsBenc.Encoders
             return result;
         }
 
+        /// <summary>
+        /// Decode the specified string as an string in UTF8.
+        /// </summary>
+        /// <param name="input">Encoded string to decode</param>
+        /// <returns>The decoded UTF8 string.</returns>
         public string Decode(string input)
         {
             return Encoding.UTF8.GetString(DecodeBytes(input));
         }
 
+        /// <summary>
+        /// Decode the specified string as an array of bytes.
+        /// </summary>
+        /// <param name="input">Encoded string to decode</param>
+        /// <returns>Decoded array of bytes</returns>
         public byte[] DecodeBytes(string input)
         {
             return GetBytes(input.TrimEnd(_pad)).ToArray();

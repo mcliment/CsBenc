@@ -5,11 +5,18 @@ using CsBenc.Internals;
 
 namespace CsBenc.Encoders
 {
+    /// <summary>
+    /// Provides a simple number encoder with an arbitrary dictionary.
+    /// </summary>
     public class SimpleEncoder
     {
         private readonly string _alphabet;
         private readonly NumberProcessor _processor;
 
+        /// <summary>
+        /// Creates a new instance of the encoder with the specified alphabet.
+        /// </summary>
+        /// <param name="alphabet">Alphabet to use for the encoding. Limited to 255 characters.</param>
         public SimpleEncoder(string alphabet)
         {
             _alphabet = alphabet;
@@ -20,6 +27,11 @@ namespace CsBenc.Encoders
 
         protected INumberProcessor Processor { get { return _processor; } }
 
+        /// <summary>
+        /// Encode the number with the specified alphabet.
+        /// </summary>
+        /// <param name="number">Number to encode</param>
+        /// <returns>The string encoding of the number</returns>
         public virtual string Encode(ulong number)
         {
             var chunks = _processor.Chunk(number);
@@ -29,6 +41,11 @@ namespace CsBenc.Encoders
             return result;
         }
 
+        /// <summary>
+        /// Decodes the specified string to its numeric representation.
+        /// </summary>
+        /// <param name="encoded">Encoded string</param>
+        /// <returns>The numeric representation of the encoded string</returns>
         public virtual ulong Decode(string encoded)
         {
             var chunks = GetChunks(encoded);
