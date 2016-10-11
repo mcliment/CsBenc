@@ -1,6 +1,6 @@
-﻿using NUnit.Framework;
+﻿using CsBenc.Encoders;
+using NUnit.Framework;
 using Shouldly;
-using CsBenc.Strings;
 
 namespace CsBenc.Tests
 {
@@ -8,7 +8,7 @@ namespace CsBenc.Tests
     [Parallelizable]
     public class RfcBase32HexEncoderTests
     {
-        private readonly StringEncoder encoder = Strings.Encoder.RfcBase32Hex();
+        private readonly StringEncoder encoder = Encoder.RfcBase32Hex();
 
         [TestCase("", "")]
         [TestCase("f", "CO======")]

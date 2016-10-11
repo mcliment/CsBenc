@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using CsBenc.Internals;
 
-namespace CsBenc
+namespace CsBenc.Encoders
 {
     public class SimpleEncoder
     {
@@ -17,7 +18,7 @@ namespace CsBenc
 
         protected string Alphabet { get { return _alphabet; } }
 
-        protected NumberProcessor Processor { get { return _processor; } }
+        protected INumberProcessor Processor { get { return _processor; } }
 
         public virtual string Encode(ulong number)
         {

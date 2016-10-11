@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace CsBenc
+namespace CsBenc.Encoders
 {
     public class CrockfordBase32Encoder : ChecksumEncoder
     {

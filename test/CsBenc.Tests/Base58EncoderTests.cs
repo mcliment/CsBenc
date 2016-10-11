@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using CsBenc.Encoders;
+using NUnit.Framework;
 using Shouldly;
 
 namespace CsBenc.Tests

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using CsBenc.Impl;
 
-namespace CsBenc
+namespace CsBenc.Internals
 {
-    public class NumberProcessor : INumberProcessor
+    internal class NumberProcessor : INumberProcessor
     {
         private readonly INumberProcessor _wrapped;
 

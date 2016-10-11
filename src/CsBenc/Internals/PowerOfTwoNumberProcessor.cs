@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace CsBenc.Impl
+namespace CsBenc.Internals
 {
     internal class PowerOfTwoNumberProcessor : INumberProcessor
     {

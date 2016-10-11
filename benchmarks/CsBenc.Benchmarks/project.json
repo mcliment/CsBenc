@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "CsBenc": "*",
-    "CsBenc.Strings": "*",
     "BenchmarkDotNet": "0.9.9"
   },
   "tools": {

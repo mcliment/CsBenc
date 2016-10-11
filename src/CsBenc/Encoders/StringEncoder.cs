@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using CsBenc.Strings.Impl;
+using CsBenc.Internals;
 
-namespace CsBenc.Strings
+namespace CsBenc.Encoders
 {
     public class StringEncoder
     {

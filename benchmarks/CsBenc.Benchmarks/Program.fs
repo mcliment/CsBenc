@@ -3,13 +3,13 @@
 open System
 open BenchmarkDotNet.Attributes
 open BenchmarkDotNet.Running
-open CsBenc.Strings
+open CsBenc
 
 type Base64Comparison () =
     let N = 10000
 
     let base64net = System.Convert.ToBase64String
-    let base64encoder = CsBenc.Strings.Encoder.RfcBase64()
+    let base64encoder = CsBenc.Encoder.RfcBase64()
 
     let mutable data = Array.zeroCreate<byte> N
 
@@ -23,7 +23,6 @@ type Base64Comparison () =
 
     [<Benchmark>]
     member self.OwnBase64 () = base64encoder.Encode(data)
-        
 
 let defaultSwitch () = BenchmarkSwitcher [| typeof<Base64Comparison> |]
 

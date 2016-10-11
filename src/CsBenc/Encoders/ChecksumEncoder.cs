@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace CsBenc
+namespace CsBenc.Encoders
 {
     public class ChecksumEncoder : SimpleEncoder
     {

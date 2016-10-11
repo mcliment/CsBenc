@@ -3,7 +3,6 @@
 
   "dependencies": {
     "CsBenc": "*",
-    "CsBenc.Strings": "*",
     "nunit": "3.4.1",
     "Shouldly": "2.8.2",
     "dotnet-test-nunit": "3.4.0-beta-1"
