@@ -84,12 +84,19 @@ namespace CsBenc.Encoders
         /// <returns>Decoded array of bytes</returns>
         public byte[] DecodeBytes(string input)
         {
-            return GetBytes(input.TrimEnd(_pad)).ToArray();
+            return GetBytes(input.TrimEnd(_pad));
         }
 
-        private IEnumerable<byte> GetBytes(string input)
+        private byte[] GetBytes(string input)
         {
-            var values = input.TrimEnd(_pad).Select(i => _alphabet.IndexOf(i));
+            var trimmed = input.TrimEnd(_pad);
+
+            var values = new int[input.Length];
+
+            for (var i = 0; i < input.Length; i++)
+            {
+                values[i] = _alphabet.IndexOf(trimmed[i]);
+            }
 
             var result = _processor.Combine(values);
 

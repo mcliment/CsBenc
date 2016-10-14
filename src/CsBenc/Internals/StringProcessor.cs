@@ -93,14 +93,15 @@ namespace CsBenc.Internals
             return cs;
         }
 
-        public IEnumerable<byte> Combine(IEnumerable<int> decoded)
+        public byte[] Combine(int[] decoded)
         {
-            var decs = decoded.ToArray();
-            
-            if (decs.Length == 0)
+            if (decoded.Length == 0)
             {
-                yield break;
+                return new byte[] {};
             }
+
+            // TODO :: Get a better approximation
+            var result = new byte[decoded.Length];
 
             var rem = byteSize;
             var mask = (1 << byteSize) - 1;
@@ -108,34 +109,42 @@ namespace CsBenc.Internals
             var i = 0;
             int dec;
             var ch = 0;
+            var len = 0;
 
             while (rem > 0)
             {
-                if (i >= decs.Length)
+                if (i >= decoded.Length)
                 {
                     rem = 0;
                 }
                 else if (rem > _size)
                 {
-                    dec = decs[i++];
+                    dec = decoded[i++];
 
                     rem = rem - _size;
                     ch = (ch | dec << rem) & mask;
                 }
                 else if (rem <= _size)
                 {
-                    dec = decs[i++];
+                    dec = decoded[i++];
 
                     var disp = _size - rem;
                     ch = (ch | (dec >> disp)) & mask;
 
-                    yield return (byte)ch;
+                    result[len] = (byte)ch;
+                    len++;
 
                     rem = byteSize - disp;
 
                     ch = dec << rem;
                 }
             }
+
+            var realResult = new byte[len];
+
+            Array.Copy(result, realResult, len);
+
+            return realResult;
         }
     }
 }
