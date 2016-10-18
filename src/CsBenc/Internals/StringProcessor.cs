@@ -26,6 +26,11 @@ namespace CsBenc.Internals
 
         public IEnumerable<byte> Chunk(byte[] value)
         {
+            if (value.Length == 0)
+            {
+                yield break;
+            }
+
             // Simple case for base16 (no padding)
             if (_size == 4)
             {

@@ -10,6 +10,12 @@ namespace CsBenc.Tests
     {
         private readonly StringEncoder encoder = Encoder.RfcBase64();
 
+        [Test]
+        public void Encodes_Empty_Array()
+        {
+            encoder.Encode(new byte[] { }).ShouldBe("");
+        }
+
         [TestCase("", "")]
         [TestCase("f", "Zg==")]
         [TestCase("fo", "Zm8=")]
