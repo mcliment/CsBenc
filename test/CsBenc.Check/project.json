@@ -1,0 +1,28 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "debugType": "portable",
+    "compilerName": "fsc",
+    "compile": {
+      "includeFiles": [
+        "Base64Checks.fs"
+      ]
+    }
+  },
+
+  "testRunner": "nunit",
+
+  "tools": {
+    "dotnet-compile-fsc": "1.0.0-preview2-*"
+  },
+  "dependencies": {
+    "CsBenc": "1.0.0-*",
+    "FsCheck": "2.6.2",
+    "FsUnit": "2.3.2",
+    "NUnit": "3.5.0",
+    "dotnet-test-nunit": "3.4.0-beta-2"
+  },
+  "frameworks": {
+    "net451": {}
+  }
+}
