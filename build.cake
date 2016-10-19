@@ -31,10 +31,12 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(() => {
         OpenCover(tool => {
-            tool.DotNetCoreTest("./test/CsBenc.Tests");
-        },
-        new FilePath("./artifacts/result.xml"),
-        new OpenCoverSettings());
+                tool.DotNetCoreTest("./test/CsBenc.Tests");
+            },
+            new FilePath("./artifacts/result.xml"),
+            new OpenCoverSettings());
+
+        DotNetCoreTest("./test/CsBenc.Check");
     });
 
 Task("Report")
