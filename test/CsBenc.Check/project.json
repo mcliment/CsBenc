@@ -5,6 +5,7 @@
     "compilerName": "fsc",
     "compile": {
       "includeFiles": [
+        "Base58Checks.fs",
         "Base64Checks.fs"
       ]
     }
