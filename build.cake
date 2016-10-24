@@ -31,12 +31,14 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(() => {
         OpenCover(tool => {
-                tool.DotNetCoreTest("./test/CsBenc.Tests", new DotNetCoreTestSettings { Configuration = "Release" });
+                tool.DotNetCoreTest("./test/CsBenc.Tests", new DotNetCoreTestSettings { Configuration = "Release", WorkingDirectory = "./test/CsBenc.Tests" });
             },
             new FilePath("./artifacts/result.xml"),
             new OpenCoverSettings());
+        MoveFile(File("./TestResult.xml"), Directory("./artifacts") + File("./TestResultTests.xml"));
 
         DotNetCoreTest("./test/CsBenc.Check", new DotNetCoreTestSettings { Configuration = "Release" });
+        MoveFile(File("./TestResult.xml"), Directory("./artifacts") + File("./TestResultChecks.xml"));
     });
 
 Task("Report")
