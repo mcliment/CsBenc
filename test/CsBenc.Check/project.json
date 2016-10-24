@@ -17,7 +17,7 @@
     "dotnet-compile-fsc": "1.0.0-preview2-*"
   },
   "dependencies": {
-    "CsBenc": "1.0.0-*",
+    "CsBenc": "*",
     "FsCheck": "2.6.2",
     "FsUnit": "2.3.2",
     "NUnit": "3.5.0",

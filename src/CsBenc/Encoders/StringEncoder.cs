@@ -74,7 +74,8 @@ namespace CsBenc.Encoders
         /// <returns>The decoded UTF8 string.</returns>
         public string Decode(string input)
         {
-            return Encoding.UTF8.GetString(DecodeBytes(input));
+            var bytes = DecodeBytes(input);
+            return Encoding.UTF8.GetString(bytes, 0, bytes.Length);
         }
 
         /// <summary>
