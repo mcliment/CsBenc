@@ -23,20 +23,20 @@ Task("Restore")
 Task("Build")
     .IsDependentOn("Restore")
     .Does(() => {
-        DotNetCoreBuild("./src/**/project.json");
-        DotNetCoreBuild("./test/**/project.json");
+        DotNetCoreBuild("./src/**/project.json", new DotNetCoreBuildSettings { Configuration = "Release" });
+        DotNetCoreBuild("./test/**/project.json", new DotNetCoreBuildSettings { Configuration = "Release" });
     });
 
 Task("Test")
     .IsDependentOn("Build")
     .Does(() => {
         OpenCover(tool => {
-                tool.DotNetCoreTest("./test/CsBenc.Tests");
+                tool.DotNetCoreTest("./test/CsBenc.Tests", new DotNetCoreTestSettings { Configuration = "Release" });
             },
             new FilePath("./artifacts/result.xml"),
             new OpenCoverSettings());
 
-        DotNetCoreTest("./test/CsBenc.Check");
+        DotNetCoreTest("./test/CsBenc.Check", new DotNetCoreTestSettings { Configuration = "Release" });
     });
 
 Task("Report")
@@ -51,6 +51,12 @@ Task("Coveralls")
     .WithCriteria(() => BuildSystem.IsRunningOnAppVeyor && hasCoveralls)
     .Does(() => {
         CoverallsNet("./artifacts/result.xml", CoverallsNetReportType.OpenCover);
+    });
+
+Task("Pack")
+    .IsDependentOn("Test")
+    .Does(() => {
+        DotNetCorePack("./src/CsBenc", new DotNetCorePackSettings { Configuration = "Release", OutputDirectory = "./artifacts" });
     });
 
 Task("Default")
