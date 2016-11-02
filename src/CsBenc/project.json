@@ -10,6 +10,10 @@
         "NETStandard.Library": "1.6.0"
       }
     },
-    "net451": {}
+    "net451": {
+      "frameworkAssemblies": {
+        "System.Numerics": "4.0.0.0"
+      }
+    }
   }
 }

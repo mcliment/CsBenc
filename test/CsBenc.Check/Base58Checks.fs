@@ -12,8 +12,15 @@ module Base58Checks =
     let config = { Config.QuickThrowOnFailure with EndSize = 1000 }
 
     let endodesAndDecodes (s:uint64) = 
-        myEncoder.Decode(myEncoder.Encode(s)) = s
+        myEncoder.DecodeLong(myEncoder.Encode(s)) = s
+
+    let encodesAndDecodesBytes (s:byte[]) =
+        myEncoder.DecodeBytes(myEncoder.Encode(s)) = s
 
     [<Test>]
     let ``Check that encoding and decoding returns original value`` () =
         Check.One (config, endodesAndDecodes)
+
+    [<Test>]
+    let ``Check that byte encoding returns original value`` () =
+        Check.One (config, encodesAndDecodesBytes)

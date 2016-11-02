@@ -55,9 +55,9 @@ namespace CsBenc.Encoders
         /// </summary>
         /// <param name="encoded">Encoded string without checksum</param>
         /// <returns>Decoded numeric value</returns>
-        public override ulong Decode(string encoded)
+        public override ulong DecodeLong(string encoded)
         {
-            return Decode(encoded, false);
+            return DecodeLong(encoded, false);
         }
 
         /// <summary>
@@ -66,10 +66,10 @@ namespace CsBenc.Encoders
         /// <param name="encoded">Encoded string with optional checksum</param>
         /// <param name="checksum">true to indicate that the string contains a checksum.</param>
         /// <returns>Decoded numeric value</returns>
-        public virtual ulong Decode(string encoded, bool checksum)
+        public virtual ulong DecodeLong(string encoded, bool checksum)
         {
             var chunks = GetChunks(checksum ? encoded.Substring(0, encoded.Length - 1) : encoded).ToArray();
-            var result = Processor.Combine(chunks);
+            var result = Processor.CombineLong(chunks);
 
             if (checksum)
             {

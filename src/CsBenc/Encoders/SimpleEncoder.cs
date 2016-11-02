@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using CsBenc.Internals;
+using System.Text;
 
 namespace CsBenc.Encoders
 {
@@ -38,7 +41,15 @@ namespace CsBenc.Encoders
             var chars = chunks.Select(c => _alphabet[c]).ToArray();
             var result = new string(chars);
 
-            return result;
+            return new string(chars);
+        }
+
+        public virtual string Encode(byte[] number)
+        {
+            var chunks = _processor.Chunk(number);
+            var chars = chunks.Select(c => _alphabet[c]).ToArray();
+
+            return new string(chars);
         }
 
         /// <summary>
@@ -46,10 +57,18 @@ namespace CsBenc.Encoders
         /// </summary>
         /// <param name="encoded">Encoded string</param>
         /// <returns>The numeric representation of the encoded string</returns>
-        public virtual ulong Decode(string encoded)
+        public virtual ulong DecodeLong(string encoded)
         {
             var chunks = GetChunks(encoded);
-            var result = _processor.Combine(chunks.ToArray());
+            var result = _processor.CombineLong(chunks.ToArray());
+
+            return result;
+        }
+
+        public virtual byte[] DecodeBytes(string encoded)
+        {
+            var chunks = GetChunks(encoded);
+            var result = _processor.CombineBytes(chunks.ToArray());
 
             return result;
         }

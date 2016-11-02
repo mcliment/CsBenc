@@ -19,7 +19,7 @@ namespace CsBenc
         /// <returns>A <see cref="SimpleEncoder"/> configured for Bitcoin Base58 encoding</returns>
         public static SimpleEncoder Base58()
         {
-            return new SimpleEncoder("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz");
+            return new Base58Encoder("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz");
         }
 
         /// <summary>

@@ -25,11 +25,11 @@ namespace CsBenc.Encoders
         /// <param name="encoded">Encoded string with optional checksum</param>
         /// <param name="checksum">true to indicate that the string contains a checksum.</param>
         /// <returns>Decoded numeric value</returns>
-        public override ulong Decode(string encoded, bool checksum)
+        public override ulong DecodeLong(string encoded, bool checksum)
         {
             var clean = Translate(CleanInput(encoded));
 
-            return base.Decode(clean, checksum);
+            return base.DecodeLong(clean, checksum);
         }
 
         private string CleanInput(string input)

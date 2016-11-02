@@ -3,16 +3,16 @@ using System.Linq;
 
 namespace CsBenc.Internals
 {
-    internal class PowerOfTwoNumberProcessor : INumberProcessor
+    internal class PowerOfTwoNumberProcessor : ArbitraryNumberProcessor
     {
         private readonly int _power;
 
-        public PowerOfTwoNumberProcessor(int power)
+        public PowerOfTwoNumberProcessor(int power, int modulo) : base(modulo)
         {
             _power = power;
         }
 
-        public IEnumerable<byte> Chunk(ulong number)
+        public override IEnumerable<byte> Chunk(ulong number)
         {
             if (number == 0)
             {
@@ -24,7 +24,7 @@ namespace CsBenc.Internals
             return chunks.Reverse();
         }
 
-        public ulong Combine(byte[] chunks)
+        public override ulong CombineLong(byte[] chunks)
         {
             ulong result = 0;
 
@@ -34,6 +34,11 @@ namespace CsBenc.Internals
             }
 
             return result;
+        }
+
+        public override byte[] CombineBytes(byte[] chunks)
+        {
+            throw new System.NotImplementedException();
         }
 
         private IEnumerable<byte> YieldChunks(ulong number)

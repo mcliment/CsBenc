@@ -31,35 +31,35 @@ namespace CsBenc.Tests
         [TestCase("FZZZZZZZZZZZZ", ulong.MaxValue)]
         public void Decodes(string encoded, ulong decoded)
         {
-            encoder.Decode(encoded).ShouldBe(decoded);
+            encoder.DecodeLong(encoded).ShouldBe(decoded);
         }
 
         [TestCase("16j", 1234UL)]
         [TestCase("fzzzzzzzzzzzz", ulong.MaxValue)]
         public void Decodes_Lowercase(string encoded, ulong decoded)
         {
-            encoder.Decode(encoded).ShouldBe(decoded);
+            encoder.DecodeLong(encoded).ShouldBe(decoded);
         }
 
         [TestCase("16-J", 1234UL)]
         [TestCase("FZZ-ZZZ-ZZZ-ZZZZ", ulong.MaxValue)]
         public void Decodes_With_Separator(string encoded, ulong decoded)
         {
-            encoder.Decode(encoded).ShouldBe(decoded);
+            encoder.DecodeLong(encoded).ShouldBe(decoded);
         }
 
         [TestCase("16JD", 1234UL)]
         [TestCase("FZZZZZZZZZZZZB", ulong.MaxValue)]
         public void Decodes_With_Checksum(string encoded, ulong decoded)
         {
-            encoder.Decode(encoded, true).ShouldBe(decoded);
+            encoder.DecodeLong(encoded, true).ShouldBe(decoded);
         }
 
         [Test]
         public void Random_Invert([Random(10)] ulong input)
         {
             var encoded = encoder.Encode(input);
-            var decoded = encoder.Decode(encoded);
+            var decoded = encoder.DecodeLong(encoded);
 
             input.ShouldBe(decoded);
         }

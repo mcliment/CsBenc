@@ -17,28 +17,28 @@ namespace CsBenc.Internals
             switch (modulo)
             {
                 case 2:
-                    _wrapped = new PowerOfTwoNumberProcessor(1);
+                    _wrapped = new PowerOfTwoNumberProcessor(1, modulo);
                     break;
                 case 4:
-                    _wrapped = new PowerOfTwoNumberProcessor(2);
+                    _wrapped = new PowerOfTwoNumberProcessor(2, modulo);
                     break;
                 case 8:
-                    _wrapped = new PowerOfTwoNumberProcessor(3);
+                    _wrapped = new PowerOfTwoNumberProcessor(3, modulo);
                     break;
                 case 16:
-                    _wrapped = new PowerOfTwoNumberProcessor(4);
+                    _wrapped = new PowerOfTwoNumberProcessor(4, modulo);
                     break;
                 case 32:
-                    _wrapped = new PowerOfTwoNumberProcessor(5);
+                    _wrapped = new PowerOfTwoNumberProcessor(5, modulo);
                     break;
                 case 64:
-                    _wrapped = new PowerOfTwoNumberProcessor(6);
+                    _wrapped = new PowerOfTwoNumberProcessor(6, modulo);
                     break;
                 case 128:
-                    _wrapped = new PowerOfTwoNumberProcessor(7);
+                    _wrapped = new PowerOfTwoNumberProcessor(7, modulo);
                     break;
                 case 256:
-                    _wrapped = new PowerOfTwoNumberProcessor(8);
+                    _wrapped = new PowerOfTwoNumberProcessor(8, modulo);
                     break;
                 default:
                     _wrapped = new ArbitraryNumberProcessor(modulo);
@@ -51,9 +51,19 @@ namespace CsBenc.Internals
             return _wrapped.Chunk(number);
         }
 
-        public ulong Combine(byte[] chunks)
+        public IEnumerable<byte> Chunk(byte[] bytes)
         {
-            return _wrapped.Combine(chunks);
+            return _wrapped.Chunk(bytes);
+        }
+
+        public ulong CombineLong(byte[] chunks)
+        {
+            return _wrapped.CombineLong(chunks);
+        }
+
+        public byte[] CombineBytes(byte[] chunks)
+        {
+            return _wrapped.CombineBytes(chunks);
         }
     }
 }
