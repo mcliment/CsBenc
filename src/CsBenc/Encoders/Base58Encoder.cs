@@ -14,14 +14,8 @@ namespace CsBenc.Encoders
 
             for (var i = 0; i < number.Length; i++)
             {
-                if (number[i] == 0)
-                {
-                    leadingZeroes++;
-                }
-                else
-                {
-                    break;
-                }
+                if (number[i] == 0) leadingZeroes++;
+                else break;
             }
 
             var toEncode = new byte[number.Length - leadingZeroes];
@@ -30,7 +24,7 @@ namespace CsBenc.Encoders
 
             var encoded = base.Encode(toEncode);
 
-            var toAppend = new String('1', leadingZeroes);
+            var toAppend = new string('1', leadingZeroes);
 
             return toAppend + encoded;
         }
@@ -39,16 +33,10 @@ namespace CsBenc.Encoders
         {
             var leadingOnes = 0;
 
-            for(var i = 0; i < encoded.Length; i++)
+            for (var i = 0; i < encoded.Length; i++)
             {
-                if (encoded[i] == '1')
-                {
-                    leadingOnes++;
-                }
-                else
-                {
-                    break;
-                }
+                if (i == '1') leadingOnes++;
+                else break;
             }
 
             var subencoded = encoded.Substring(leadingOnes);
@@ -56,11 +44,6 @@ namespace CsBenc.Encoders
             var decoded = base.DecodeBytes(subencoded);
 
             var result = new byte[leadingOnes + decoded.Length];
-
-            for(var i = 0; i < leadingOnes; i++)
-            {
-                result[i] = 0;
-            }
 
             Array.Copy(decoded, 0, result, leadingOnes, decoded.Length);
 
