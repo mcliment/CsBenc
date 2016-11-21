@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
 using CsBenc.Internals;
-using System.Text;
 
 namespace CsBenc.Encoders
 {
@@ -26,9 +23,9 @@ namespace CsBenc.Encoders
             _processor = new NumberProcessor(alphabet.Length);
         }
 
-        protected string Alphabet { get { return _alphabet; } }
+        protected string Alphabet => _alphabet;
 
-        protected INumberProcessor Processor { get { return _processor; } }
+        protected INumberProcessor Processor => _processor;
 
         /// <summary>
         /// Encode the number with the specified alphabet.
@@ -39,15 +36,21 @@ namespace CsBenc.Encoders
         {
             var chunks = _processor.Chunk(number);
             var chars = chunks.Select(c => _alphabet[c]).ToArray();
-            var result = new string(chars);
 
             return new string(chars);
         }
 
         public virtual string Encode(byte[] number)
         {
-            var chunks = _processor.Chunk(number);
-            var chars = chunks.Select(c => _alphabet[c]).ToArray();
+            int offset;
+
+            var chunks = _processor.Chunk(number, 0, out offset);
+            var chars = new char[chunks.Length - offset];
+
+            for (var i = 0; i < chars.Length; i++)
+            {
+                chars[i] = _alphabet[chunks[i + offset]];
+            }
 
             return new string(chars);
         }

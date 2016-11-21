@@ -6,7 +6,7 @@ namespace CsBenc.Internals
     {
         IEnumerable<byte> Chunk(ulong number);
 
-        IEnumerable<byte> Chunk(byte[] bytes);
+        byte[] Chunk(byte[] bytes, int startOffset, out int endOffset);
 
         ulong CombineLong(byte[] chunks);
 

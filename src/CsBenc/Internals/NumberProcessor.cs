@@ -51,9 +51,9 @@ namespace CsBenc.Internals
             return _wrapped.Chunk(number);
         }
 
-        public IEnumerable<byte> Chunk(byte[] bytes)
+        public byte[] Chunk(byte[] bytes, int startOffset, out int endOffset)
         {
-            return _wrapped.Chunk(bytes);
+            return _wrapped.Chunk(bytes, startOffset, out endOffset);
         }
 
         public ulong CombineLong(byte[] chunks)

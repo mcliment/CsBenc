@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 
@@ -7,12 +8,13 @@ namespace CsBenc.Internals
 {
     internal class ArbitraryNumberProcessor : INumberProcessor
     {
-        private const int byteSize = 8;
         private readonly int _modulo;
+        private readonly int _expandFactor;
 
         public ArbitraryNumberProcessor(int modulo)
         {
             _modulo = modulo;
+            _expandFactor = (int) Math.Ceiling(Math.Log(256) * 100 / Math.Log(_modulo));
         }
 
         public virtual IEnumerable<byte> Chunk(ulong number)
@@ -27,19 +29,47 @@ namespace CsBenc.Internals
             return chunks.Reverse();
         }
 
-        public virtual IEnumerable<byte> Chunk(byte[] value)
+        public virtual byte[] Chunk(byte[] input, int startOffset, out int endOffset)
         {
-            if (value.Length == 0)
+            var length = input.Length;
+
+            if (length == 0)
             {
+                endOffset = 0;
                 return new byte[] { };
             }
 
-            // Append 0 at the end to force positiveness
-            var num = new BigInteger(value.Reverse().Concat(new byte[] { 0x00 }).ToArray());
+            var len = 0;
 
-            var chunks = YieldChunks(num);
+            var resultSize = length * _expandFactor / 100 + 1;
+            var result = new byte[resultSize];
 
-            return chunks.Reverse();
+            for (var pos = startOffset; pos < length; pos++)
+            {
+                int carry = input[pos];
+                var i = 0;
+
+                // Large integer division algorithm (adapted from base58.cpp)
+                for (var resultPos = resultSize; (carry != 0 || i < len) && resultPos > 0; resultPos--, i++)
+                {
+                    carry = carry + 256 * result[resultPos - 1];
+                    result[resultPos - 1] = (byte)(carry % _modulo);
+                    carry = carry / _modulo;
+                }
+
+                Debug.Assert(carry == 0);
+                len = i;
+            }
+
+            // Remove leading zeroes
+            var leadingResultZeroes = resultSize - len;
+            while (leadingResultZeroes < resultSize && result[leadingResultZeroes] == 0)
+            {
+                leadingResultZeroes++;
+            }
+
+            endOffset = leadingResultZeroes;
+            return result;
         }
 
         public virtual ulong CombineLong(byte[] chunks)
@@ -85,21 +115,6 @@ namespace CsBenc.Internals
             {
                 var rem = next % (ulong)_modulo; // remainder
                 next = next / (ulong)_modulo; // division
-
-                yield return (byte)rem;
-            }
-        }
-
-        private IEnumerable<byte> YieldChunks(BigInteger number)
-        {
-            var next = number;
-
-            while (next != BigInteger.Zero)
-            {
-                BigInteger rem;
-                next = BigInteger.DivRem(next, _modulo, out rem);
-                // var rem = next % (ulong)_modulo; // remainder
-                // next = next / (ulong)_modulo; // division
 
                 yield return (byte)rem;
             }
