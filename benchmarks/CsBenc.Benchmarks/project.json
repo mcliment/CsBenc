@@ -12,25 +12,16 @@
   },
   "dependencies": {
     "CsBenc": "*",
-    "BenchmarkDotNet": "0.9.9"
+    "BenchmarkDotNet": "0.10.0"
   },
   "tools": {
-    "dotnet-compile-fsc":"1.0.0-preview2-*"
+    "dotnet-compile-fsc": "1.0.0-preview2-020000"
   },
   "frameworks": {
-    "netcoreapp1.0": {
-      "dependencies": {
-        "Microsoft.NETCore.App": {
-          "type": "platform",
-          "version": "1.0.1"
-        },
-        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160629"
-      }
-    },
     "net451": {
       "dependencies": {
-        "BenchmarkDotNet.Diagnostics.Windows": "0.9.9",
-        "FSharp.Core": "4.0.1.5"
+        "BenchmarkDotNet.Diagnostics.Windows": "0.10.0",
+        "FSharp.Core": "4.0.0.1"
       }
     }
   }

@@ -21,7 +21,7 @@
     "FsCheck": "2.6.2",
     "FsUnit": "2.3.2",
     "NUnit": "3.5.0",
-    "dotnet-test-nunit": "3.4.0-beta-2"
+    "dotnet-test-nunit": "3.4.0-beta-3"
   },
   "frameworks": {
     "net451": {}
