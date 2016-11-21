@@ -24,7 +24,7 @@ namespace CsBenc.Encoders
                 else break;
             }
 
-            var resultSize = input.Length * 138 / 100 + 1; // log(256) / log(58) rounded up
+            var resultSize = input.Length * 137 / 100 + 1; // log(256) / log(58) rounded up
             var result = new byte[resultSize];
 
             for (var pos = leadingZeroes; pos < input.Length; pos++)
