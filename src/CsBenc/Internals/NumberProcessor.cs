@@ -61,9 +61,9 @@ namespace CsBenc.Internals
             return _wrapped.CombineLong(chunks);
         }
 
-        public byte[] CombineBytes(byte[] chunks)
+        public byte[] CombineBytes(byte[] chunks, int startOffset)
         {
-            return _wrapped.CombineBytes(chunks);
+            return _wrapped.CombineBytes(chunks, startOffset);
         }
     }
 }

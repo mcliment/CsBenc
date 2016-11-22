@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
 
 namespace CsBenc.Internals
 {
@@ -10,11 +9,13 @@ namespace CsBenc.Internals
     {
         private readonly int _modulo;
         private readonly int _expandFactor;
+        private readonly int _shrinkFactor;
 
         public ArbitraryNumberProcessor(int modulo)
         {
             _modulo = modulo;
             _expandFactor = (int) Math.Ceiling(Math.Log(256) * 100 / Math.Log(_modulo));
+            _shrinkFactor = (int) Math.Ceiling(Math.Log(_modulo) * 1000 / Math.Log(256));
         }
 
         public virtual IEnumerable<byte> Chunk(ulong number)
@@ -84,24 +85,40 @@ namespace CsBenc.Internals
             return result;
         }
 
-        public virtual byte[] CombineBytes(byte[] chunks)
+        public virtual byte[] CombineBytes(byte[] chunks, int startOffset)
         {
-            BigInteger number = 0;
+            var resultSize = chunks.Length * _shrinkFactor / 1000 + 1;
+            var resultChars = new byte[resultSize];
 
-            for (var i = 0; i < chunks.Length; i++)
+            for (var i = startOffset; i < chunks.Length; i++)
             {
-                number = number * _modulo + chunks[i];
+                var curr = chunks[i];
+
+                int ch = curr;
+
+                var carry = ch;
+
+                for (var pos = resultChars.Length; pos > startOffset; pos--)
+                {
+                    carry = carry + _modulo * resultChars[pos - 1];
+                    resultChars[pos - 1] = (byte)(carry % 256);
+                    carry = carry / 256;
+                }
+
+                Debug.Assert(carry == 0);
             }
 
-            var bytes = number.ToByteArray().Reverse().ToArray();
-
-            if (bytes[0] == 0x00)
+            var trailingZeroes = 0;
+            foreach (var ch in resultChars)
             {
-                var result = new byte[bytes.Length - 1];
+                if (ch == 0) trailingZeroes++;
+                else break;
+            }
 
-                Array.Copy(bytes, 1, result, 0, result.Length);
-
-                return result;
+            var bytes = new byte[startOffset + resultChars.Length - trailingZeroes];
+            for (var ix = startOffset; ix < bytes.Length; ix++)
+            {
+                bytes[ix] = resultChars[ix - startOffset + trailingZeroes];
             }
 
             return bytes;

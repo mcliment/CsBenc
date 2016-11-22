@@ -10,6 +10,6 @@ namespace CsBenc.Internals
 
         ulong CombineLong(byte[] chunks);
 
-        byte[] CombineBytes(byte[] chunks);
+        byte[] CombineBytes(byte[] chunks, int startOffset);
     }
 }

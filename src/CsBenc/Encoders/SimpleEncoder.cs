@@ -71,7 +71,7 @@ namespace CsBenc.Encoders
         public virtual byte[] DecodeBytes(string encoded)
         {
             var chunks = GetChunks(encoded);
-            var result = _processor.CombineBytes(chunks.ToArray());
+            var result = _processor.CombineBytes(chunks.ToArray(), 0);
 
             return result;
         }

@@ -36,7 +36,7 @@ namespace CsBenc.Internals
             return result;
         }
 
-        public override byte[] CombineBytes(byte[] chunks)
+        public override byte[] CombineBytes(byte[] chunks, int startOffset)
         {
             throw new System.NotImplementedException();
         }
