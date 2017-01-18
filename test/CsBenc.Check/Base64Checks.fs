@@ -2,7 +2,6 @@
 
 open FsCheck
 open NUnit.Framework
-open FsUnit
 open System
 
 module Base64Checks =

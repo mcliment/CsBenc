@@ -10,18 +10,30 @@
       ]
     }
   },
+  "runtimes": {
+    "win7-x64": {}
+  },
   "dependencies": {
     "CsBenc": "*",
-    "BenchmarkDotNet": "0.10.0"
+    "BenchmarkDotNet": "0.10.0",
+    "FSharp.Core": "4.0.1.5"
   },
   "tools": {
     "dotnet-compile-fsc": "1.0.0-preview2-020000"
   },
   "frameworks": {
+    "netcoreapp1.0": {
+      "imports": "portable-net45+win8",
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "version": "1.0.3",
+          "type": "platform"
+        }
+      }
+    },
     "net451": {
       "dependencies": {
-        "BenchmarkDotNet.Diagnostics.Windows": "0.10.0",
-        "FSharp.Core": "4.0.0.1"
+        "BenchmarkDotNet.Diagnostics.Windows": "0.10.0"
       }
     }
   }

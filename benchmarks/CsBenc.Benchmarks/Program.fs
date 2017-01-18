@@ -1,10 +1,28 @@
 ﻿module Program
 
 open System
+open System.Numerics
 open BenchmarkDotNet.Attributes
+open BenchmarkDotNet.Configs
+#if NET45
+open BenchmarkDotNet.Diagnostics.Windows
+#endif
+open BenchmarkDotNet.Jobs
 open BenchmarkDotNet.Running
 open CsBenc
 
+type Config() =
+    inherit ManualConfig()
+    do
+        //base.Add Job.Dry
+        //base.Add Job.LongRun
+        #if NET45
+        base.Add (new MemoryDiagnoser())
+        #endif
+        //base.Add (new InliningDiagnoser())
+        ()
+
+[<Config(typeof<Config>)>]
 type Base64EncodingComparison () =
     let N = 10000
 
@@ -24,11 +42,15 @@ type Base64EncodingComparison () =
     [<Benchmark>]
     member self.OwnBase64 () = base64encoder.Encode(data)
 
+    //[<Benchmark>]
+    // member self.OwnBase64_2 () = base64encoder.Encode2(data)
+
+[<Config(typeof<Config>)>]
 type Base64DecodingComparison () =
     let N = 10000
 
     let base64net = System.Convert.FromBase64String
-    let base64decoder = CsBenc.Encoder.RfcBase64()
+    let base64decoder = CsBenc.Encoder.RfcBase64().DecodeBytes
 
     let mutable encoded = ""
 
@@ -42,8 +64,7 @@ type Base64DecodingComparison () =
     member self.NetBase64 () = base64net(encoded)
 
     [<Benchmark>]
-    member self.OwnBase64 () = base64decoder.Decode(encoded)
-
+    member self.OwnBase64 () = base64decoder(encoded)
 
 let defaultSwitch () = BenchmarkSwitcher [| typeof<Base64EncodingComparison>; typeof<Base64DecodingComparison> |]
 

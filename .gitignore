@@ -246,3 +246,4 @@ ModelManifest.xml
 
 # Build artifacts
 tools/
+benchmarks/CsBenc.Benchmarks/BenchmarkDotNet.Artifacts/*
