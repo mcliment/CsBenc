@@ -31,7 +31,7 @@ type Base64EncodingComparison () =
 
     let mutable data = Array.zeroCreate<byte> N
 
-    [<Setup>]
+    [<GlobalSetup>]
     member self.SetupData () =
         data <- Array.zeroCreate<byte> N
         (new Random(42)).NextBytes(data)
@@ -54,7 +54,7 @@ type Base64DecodingComparison () =
 
     let mutable encoded = ""
 
-    [<Setup>]
+    [<GlobalSetup>]
     member self.SetupData () =
         let mutable data = Array.zeroCreate<byte> N
         (new Random(42)).NextBytes(data)

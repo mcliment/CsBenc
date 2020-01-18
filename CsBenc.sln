@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7680049A-E3F1-4E85-B93B-3DD2D57BC018}"
 EndProject
@@ -16,17 +16,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CsBenc", "src\CsBenc\CsBenc.xproj", "{B2722529-3342-4495-BD47-ACE7A9FD99EC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{520F4473-FEB8-461A-BEF9-45FA0EB7C60F}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CsBenc.Tests", "test\CsBenc.Tests\CsBenc.Tests.xproj", "{91D85B18-9D06-4D96-82B3-B26425D641A0}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CsBenc.Benchmarks", "benchmarks\CsBenc.Benchmarks\CsBenc.Benchmarks.xproj", "{0D5A0673-1A08-4E39-B15A-FCB605290932}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", "{98F5DCCD-24B6-4DE6-993C-5A5DCA5108B0}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CsBenc.Check", "test\CsBenc.Check\CsBenc.Check.xproj", "{7BA446EF-BC61-4846-A30D-10D5E2859B4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsBenc", "src\CsBenc\CsBenc.csproj", "{B2722529-3342-4495-BD47-ACE7A9FD99EC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsBenc.Tests", "test\CsBenc.Tests\CsBenc.Tests.csproj", "{91D85B18-9D06-4D96-82B3-B26425D641A0}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "CsBenc.Check", "test\CsBenc.Check\CsBenc.Check.fsproj", "{7BA446EF-BC61-4846-A30D-10D5E2859B4B}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "CsBenc.Benchmarks", "benchmarks\CsBenc.Benchmarks\CsBenc.Benchmarks.fsproj", "{0D5A0673-1A08-4E39-B15A-FCB605290932}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,14 +42,14 @@ Global
 		{91D85B18-9D06-4D96-82B3-B26425D641A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91D85B18-9D06-4D96-82B3-B26425D641A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91D85B18-9D06-4D96-82B3-B26425D641A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D5A0673-1A08-4E39-B15A-FCB605290932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D5A0673-1A08-4E39-B15A-FCB605290932}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D5A0673-1A08-4E39-B15A-FCB605290932}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D5A0673-1A08-4E39-B15A-FCB605290932}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7BA446EF-BC61-4846-A30D-10D5E2859B4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7BA446EF-BC61-4846-A30D-10D5E2859B4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BA446EF-BC61-4846-A30D-10D5E2859B4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BA446EF-BC61-4846-A30D-10D5E2859B4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D5A0673-1A08-4E39-B15A-FCB605290932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D5A0673-1A08-4E39-B15A-FCB605290932}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D5A0673-1A08-4E39-B15A-FCB605290932}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D5A0673-1A08-4E39-B15A-FCB605290932}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,7 +57,10 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B2722529-3342-4495-BD47-ACE7A9FD99EC} = {7680049A-E3F1-4E85-B93B-3DD2D57BC018}
 		{91D85B18-9D06-4D96-82B3-B26425D641A0} = {520F4473-FEB8-461A-BEF9-45FA0EB7C60F}
-		{0D5A0673-1A08-4E39-B15A-FCB605290932} = {98F5DCCD-24B6-4DE6-993C-5A5DCA5108B0}
 		{7BA446EF-BC61-4846-A30D-10D5E2859B4B} = {520F4473-FEB8-461A-BEF9-45FA0EB7C60F}
+		{0D5A0673-1A08-4E39-B15A-FCB605290932} = {98F5DCCD-24B6-4DE6-993C-5A5DCA5108B0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {712BE7D9-2227-47B1-B592-EF9C4BEBC944}
 	EndGlobalSection
 EndGlobal
