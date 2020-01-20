@@ -1,33 +1,10 @@
 language: csharp
-dist: trusty
-sudo: required
-
-env:
-- MONO_THREADS_PER_CPU=2000
-mono:
-- 4.0.5
+mono: none
+dotnet: 3.1.1
+solution: CsBenc.sln
 os:
 - linux
-addons:
-  apt:
-    packages:
-    - gettext
-    - libcurl4-openssl-dev
-    - libicu-dev
-    - libssl-dev
-    - libunwind8
-    - zlib1g
-
-solution: CsBenc.sln
-
-install:
-- sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet/ trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
-- sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
-- sudo apt-get update
-- sudo apt-get install -y dotnet-dev-1.0.0-preview2-003131
-
 script:
 - dotnet restore
-- cd src/CsBenc/ && dotnet restore && dotnet build && cd -
-- cd test/CsBenc.Tests/ && dotnet restore && dotnet build && cd -
-- cd test/CsBenc.Tests/ && dotnet test -f netcoreapp1.0 && cd -
+- dotnet build
+- dotnet test
