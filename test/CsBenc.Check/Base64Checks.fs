@@ -1,7 +1,7 @@
 ﻿namespace Checks
 
 open FsCheck
-open NUnit.Framework
+open global.Xunit
 open System
 
 module Base64Checks =
@@ -25,14 +25,14 @@ module Base64Checks =
         myEncoder.DecodeBytes(myEncoder.Encode(s)) = s 
         |> Prop.trivial (s.Length = 0)
 
-    [<Test>]
+    [<Fact>]
     let ``Check that base64 encodes as that on System`` () =
         Check.One (config, encodesAsSystem)
 
-    [<Test>]
+    [<Fact>]
     let ``Check that base64 decodes as that on System`` () =
         Check.One (config, decodesAsSystem)
 
-    [<Test>]
+    [<Fact>]
     let ``Check that base64 encoding and decoding returns original value`` () =
         Check.One (config, endodesAndDecodes)
