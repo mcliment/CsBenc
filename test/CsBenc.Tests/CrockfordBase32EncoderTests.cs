@@ -1,67 +1,86 @@
 ﻿using CsBenc.Encoders;
-using NUnit.Framework;
 using Shouldly;
+using System;
+using System.Collections.Generic;
+using Xunit;
 
 namespace CsBenc.Tests
 {
-    [TestFixture]
-    [Parallelizable]
     public class CrockfordBase32EncoderTests
     {
         private readonly ChecksumEncoder encoder = Encoder.CrockfordBase32();
 
-        [TestCase(0UL, "0")]
-        [TestCase(1234UL, "16J")]
-        [TestCase(ulong.MaxValue, "FZZZZZZZZZZZZ")]
+        [Theory]
+        [InlineData(0UL, "0")]
+        [InlineData(1234UL, "16J")]
+        [InlineData(ulong.MaxValue, "FZZZZZZZZZZZZ")]
         public void Encodes(ulong value, string encoded)
         {
             encoder.Encode(value).ShouldBe(encoded);
         }
 
-        [TestCase(0UL, "00")]
-        [TestCase(1234UL, "16JD")]
-        [TestCase(ulong.MaxValue, "FZZZZZZZZZZZZB")]
+        [Theory]
+        [InlineData(0UL, "00")]
+        [InlineData(1234UL, "16JD")]
+        [InlineData(ulong.MaxValue, "FZZZZZZZZZZZZB")]
         public void Encodes_With_Checksum(ulong value, string encoded)
         {
             encoder.Encode(value, true).ShouldBe(encoded);
         }
 
-        [TestCase("0", 0UL)]
-        [TestCase("16J", 1234UL)]
-        [TestCase("FZZZZZZZZZZZZ", ulong.MaxValue)]
+        [Theory]
+        [InlineData("0", 0UL)]
+        [InlineData("16J", 1234UL)]
+        [InlineData("FZZZZZZZZZZZZ", ulong.MaxValue)]
         public void Decodes(string encoded, ulong decoded)
         {
             encoder.DecodeLong(encoded).ShouldBe(decoded);
         }
 
-        [TestCase("16j", 1234UL)]
-        [TestCase("fzzzzzzzzzzzz", ulong.MaxValue)]
+        [Theory]
+        [InlineData("16j", 1234UL)]
+        [InlineData("fzzzzzzzzzzzz", ulong.MaxValue)]
         public void Decodes_Lowercase(string encoded, ulong decoded)
         {
             encoder.DecodeLong(encoded).ShouldBe(decoded);
         }
 
-        [TestCase("16-J", 1234UL)]
-        [TestCase("FZZ-ZZZ-ZZZ-ZZZZ", ulong.MaxValue)]
+        [Theory]
+        [InlineData("16-J", 1234UL)]
+        [InlineData("FZZ-ZZZ-ZZZ-ZZZZ", ulong.MaxValue)]
         public void Decodes_With_Separator(string encoded, ulong decoded)
         {
             encoder.DecodeLong(encoded).ShouldBe(decoded);
         }
 
-        [TestCase("16JD", 1234UL)]
-        [TestCase("FZZZZZZZZZZZZB", ulong.MaxValue)]
+        [Theory]
+        [InlineData("16JD", 1234UL)]
+        [InlineData("FZZZZZZZZZZZZB", ulong.MaxValue)]
         public void Decodes_With_Checksum(string encoded, ulong decoded)
         {
             encoder.DecodeLong(encoded, true).ShouldBe(decoded);
         }
 
-        [Test]
-        public void Random_Invert([Random(10)] ulong input)
+        [Theory]
+        [MemberData(nameof(GetRandom), parameters: 10)]
+        public void Random_Invert(ulong input)
         {
             var encoded = encoder.Encode(input);
             var decoded = encoder.DecodeLong(encoded);
 
             input.ShouldBe(decoded);
+        }
+
+        public static IEnumerable<object[]> GetRandom(int count)
+        {
+            var random = new Random(42);
+
+            for (var i = 0; i < count; i++)
+            {
+                var buffer = new byte[8];
+                random.NextBytes(buffer);
+                yield return new object[] { BitConverter.ToUInt64(buffer, 0) };
+            }
         }
     }
 }

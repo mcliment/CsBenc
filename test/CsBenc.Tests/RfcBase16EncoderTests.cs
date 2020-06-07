@@ -1,34 +1,34 @@
 ﻿using CsBenc.Encoders;
-using NUnit.Framework;
 using Shouldly;
+using Xunit;
 
 namespace CsBenc.Tests
 {
-    [TestFixture]
-    [Parallelizable]
     public class RfcBase16EncoderTests
     {
         private readonly StringEncoder encoder = Encoder.RfcBase16();
 
-        [TestCase("", "")]
-        [TestCase("f", "66")]
-        [TestCase("fo", "666F")]
-        [TestCase("foo", "666F6F")]
-        [TestCase("foob", "666F6F62")]
-        [TestCase("fooba", "666F6F6261")]
-        [TestCase("foobar", "666F6F626172")]
+        [Theory]
+        [InlineData("", "")]
+        [InlineData("f", "66")]
+        [InlineData("fo", "666F")]
+        [InlineData("foo", "666F6F")]
+        [InlineData("foob", "666F6F62")]
+        [InlineData("fooba", "666F6F6261")]
+        [InlineData("foobar", "666F6F626172")]
         public void Encodes_Test_Vectors(string input, string encoded)
         {
             encoder.Encode(input).ShouldBe(encoded);
         }
 
-        [TestCase("", "")]
-        [TestCase("66", "f")]
-        [TestCase("666F", "fo")]
-        [TestCase("666F6F", "foo")]
-        [TestCase("666F6F62", "foob")]
-        [TestCase("666F6F6261", "fooba")]
-        [TestCase("666F6F626172", "foobar")]
+        [Theory]
+        [InlineData("", "")]
+        [InlineData("66", "f")]
+        [InlineData("666F", "fo")]
+        [InlineData("666F6F", "foo")]
+        [InlineData("666F6F62", "foob")]
+        [InlineData("666F6F6261", "fooba")]
+        [InlineData("666F6F626172", "foobar")]
         public void Decodes_Test_Vectors(string encoded, string output)
         {
             encoder.Decode(encoded).ShouldBe(output);

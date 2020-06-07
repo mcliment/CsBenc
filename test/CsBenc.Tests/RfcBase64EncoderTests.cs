@@ -1,64 +1,66 @@
 ﻿using CsBenc.Encoders;
-using NUnit.Framework;
 using Shouldly;
+using Xunit;
 
 namespace CsBenc.Tests
 {
-    [TestFixture]
-    [Parallelizable]
     public class RfcBase64EncoderTests
     {
         private readonly StringEncoder encoder = Encoder.RfcBase64();
 
-        [Test]
+        [Fact]
         public void Encodes_Empty_Array()
         {
             encoder.Encode(new byte[] { }).ShouldBe("");
         }
 
-        [TestCase("", "")]
-        [TestCase("f", "Zg==")]
-        [TestCase("fo", "Zm8=")]
-        [TestCase("foo", "Zm9v")]
-        [TestCase("foob", "Zm9vYg==")]
-        [TestCase("fooba", "Zm9vYmE=")]
-        [TestCase("foobar", "Zm9vYmFy")]
+        [Theory]
+        [InlineData("", "")]
+        [InlineData("f", "Zg==")]
+        [InlineData("fo", "Zm8=")]
+        [InlineData("foo", "Zm9v")]
+        [InlineData("foob", "Zm9vYg==")]
+        [InlineData("fooba", "Zm9vYmE=")]
+        [InlineData("foobar", "Zm9vYmFy")]
         public void Encodes_Test_Vectors(string input, string encoded)
         {
             encoder.Encode(input).ShouldBe(encoded);
         }
 
-        [TestCase("", "")]
-        [TestCase("f", "Zg==")]
-        [TestCase("fó", "ZsOz")]
-        [TestCase("fóó", "ZsOzw7M=")]
-        [TestCase("fóób", "ZsOzw7Ni")]
-        [TestCase("fóóbà", "ZsOzw7Niw6A=")]
-        [TestCase("fóóbàr", "ZsOzw7Niw6By")]
+        [Theory]
+        [InlineData("", "")]
+        [InlineData("f", "Zg==")]
+        [InlineData("fó", "ZsOz")]
+        [InlineData("fóó", "ZsOzw7M=")]
+        [InlineData("fóób", "ZsOzw7Ni")]
+        [InlineData("fóóbà", "ZsOzw7Niw6A=")]
+        [InlineData("fóóbàr", "ZsOzw7Niw6By")]
         public void Encodes_Test_Vectors_UTF8(string input, string encoded)
         {
             encoder.Encode(input).ShouldBe(encoded);
         }
 
-        [TestCase("", "")]
-        [TestCase("Zg==", "f")]
-        [TestCase("Zm8=", "fo")]
-        [TestCase("Zm9v", "foo")]
-        [TestCase("Zm9vYg==", "foob")]
-        [TestCase("Zm9vYmE=", "fooba")]
-        [TestCase("Zm9vYmFy", "foobar")]
+        [Theory]
+        [InlineData("", "")]
+        [InlineData("Zg==", "f")]
+        [InlineData("Zm8=", "fo")]
+        [InlineData("Zm9v", "foo")]
+        [InlineData("Zm9vYg==", "foob")]
+        [InlineData("Zm9vYmE=", "fooba")]
+        [InlineData("Zm9vYmFy", "foobar")]
         public void Decodes_Test_Vectors(string encoded, string output)
         {
             encoder.Decode(encoded).ShouldBe(output);
         }
 
-        [TestCase("", "")]
-        [TestCase("Zg==", "f")]
-        [TestCase("ZsOz", "fó")]
-        [TestCase("ZsOzw7M=", "fóó")]
-        [TestCase("ZsOzw7Ni", "fóób")]
-        [TestCase("ZsOzw7Niw6A=", "fóóbà")]
-        [TestCase("ZsOzw7Niw6By", "fóóbàr")]
+        [Theory]
+        [InlineData("", "")]
+        [InlineData("Zg==", "f")]
+        [InlineData("ZsOz", "fó")]
+        [InlineData("ZsOzw7M=", "fóó")]
+        [InlineData("ZsOzw7Ni", "fóób")]
+        [InlineData("ZsOzw7Niw6A=", "fóóbà")]
+        [InlineData("ZsOzw7Niw6By", "fóóbàr")]
         public void Decodes_Test_Vectors_UTF8(string encoded, string output)
         {
             encoder.Decode(encoded).ShouldBe(output);
