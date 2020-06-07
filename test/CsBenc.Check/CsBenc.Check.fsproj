@@ -10,7 +10,7 @@
   <ItemGroup>
     <Compile Include="Base64Checks.fs" />
     <Compile Include="Base58Checks.fs" />
-    <Compile Include="Empty.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
