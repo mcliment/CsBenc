@@ -1,5 +1,6 @@
 # CsBenc
 
+![.NET Core](https://github.com/mcliment/CsBenc/workflows/.NET%20Core/badge.svg)
 [![Build Status](https://travis-ci.org/mcliment/CsBenc.svg?branch=master)](https://travis-ci.org/mcliment/CsBenc)
 [![Build status](https://ci.appveyor.com/api/projects/status/fjci7fei2wyqqu45?svg=true)](https://ci.appveyor.com/project/mcliment/csbenc)
 [![Coverage Status](https://coveralls.io/repos/github/mcliment/CsBenc/badge.svg?branch=master)](https://coveralls.io/github/mcliment/CsBenc?branch=master)
