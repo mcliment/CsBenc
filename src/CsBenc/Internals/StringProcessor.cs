@@ -88,7 +88,7 @@ namespace CsBenc.Internals
                 newSize++;
             }
 
-            System.Array.Resize(ref cs, newSize);
+            Array.Resize(ref cs, newSize);
 
             for(var i = size; i < newSize; i++)
             {

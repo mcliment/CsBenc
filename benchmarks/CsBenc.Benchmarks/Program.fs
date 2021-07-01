@@ -1,28 +1,10 @@
 ﻿module Program
 
 open System
-open System.Numerics
 open BenchmarkDotNet.Attributes
-open BenchmarkDotNet.Configs
-#if NET45
-open BenchmarkDotNet.Diagnostics.Windows
-#endif
-open BenchmarkDotNet.Jobs
 open BenchmarkDotNet.Running
-open CsBenc
 
-type Config() =
-    inherit ManualConfig()
-    do
-        //base.Add Job.Dry
-        //base.Add Job.LongRun
-        #if NET45
-        base.Add (new MemoryDiagnoser())
-        #endif
-        //base.Add (new InliningDiagnoser())
-        ()
-
-[<Config(typeof<Config>)>]
+[<MemoryDiagnoser>]
 type Base64EncodingComparison () =
     let N = 10000
 
@@ -45,7 +27,7 @@ type Base64EncodingComparison () =
     //[<Benchmark>]
     // member self.OwnBase64_2 () = base64encoder.Encode2(data)
 
-[<Config(typeof<Config>)>]
+[<MemoryDiagnoser>]
 type Base64DecodingComparison () =
     let N = 10000
 
