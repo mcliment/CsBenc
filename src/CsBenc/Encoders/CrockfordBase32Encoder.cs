@@ -32,7 +32,7 @@ namespace CsBenc.Encoders
             return base.DecodeLong(clean, checksum);
         }
 
-        private string CleanInput(string input)
+        private static string CleanInput(string input)
         {
             var upper = input.ToUpperInvariant();
 
@@ -46,7 +46,7 @@ namespace CsBenc.Encoders
             return upper;
         }
 
-        private string Translate(string input)
+        private static string Translate(string input)
         {
             var translated = input.Select(c =>
             {
