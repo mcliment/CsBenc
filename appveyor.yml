@@ -1,8 +1,4 @@
 version: 1.0.{build}
-before_build:
-- ps: >-
-    dotnet --info
-
-    dotnet restore
+image: Visual Studio 2022
 build:
   verbosity: minimal
