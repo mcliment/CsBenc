@@ -4,5 +4,3 @@ before_build:
 - ps: dotnet restore
 build_script:
 - ps: .\build.ps1
-build:
-  verbosity: minimal
