@@ -1,8 +1,7 @@
 # CsBenc
 
 ![.NET Core](https://github.com/mcliment/CsBenc/workflows/.NET%20Core/badge.svg)
-[![Build Status](https://travis-ci.org/mcliment/CsBenc.svg?branch=master)](https://travis-ci.org/mcliment/CsBenc)
-[![Build status](https://ci.appveyor.com/api/projects/status/fjci7fei2wyqqu45?svg=true)](https://ci.appveyor.com/project/mcliment/csbenc)
+[![Build status](https://ci.appveyor.com/api/projects/status/ui0t73034mc25krf/branch/master?svg=true)](https://ci.appveyor.com/project/MarcCliment/csbenc/branch/master)
 [![Coverage Status](https://coveralls.io/repos/github/mcliment/CsBenc/badge.svg?branch=master)](https://coveralls.io/github/mcliment/CsBenc?branch=master)
 
 A base-n encoder for the .NET ecosystem.
@@ -30,15 +29,15 @@ Example:
 ```csharp
 // Create a new Base64 encoder instance
 var encoder = Encoder.RfcBase64();
-    
+
 var text = "This is a test"; // Text to encode
 var encoded = encoder.Encode(text); // encoded == "VGhpcyBpcyBhIHRlc3Q="
 ```
-    
+
 Or a simpler usage:
 ```csharp
 var encoded = Encoder.RfcBase32().Encode("This is a test"); // encoded == "KRUGS4ZANFZSAYJAORSXG5A="
-```    
+```
 
 ## Roadmap
 
