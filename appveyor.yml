@@ -3,6 +3,7 @@ image: Visual Studio 2022
 before_build:
 - ps: >-
     dotnet --info
+
     dotnet restore
 build:
   verbosity: minimal
