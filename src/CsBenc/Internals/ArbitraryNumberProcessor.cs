@@ -77,9 +77,9 @@ namespace CsBenc.Internals
         {
             ulong result = 0;
 
-            for (var i = 0; i < chunks.Length; i++)
+            foreach (var t in chunks)
             {
-                result = (result * (ulong)_modulo) + chunks[i];
+                result = (result * (ulong)_modulo) + t;
             }
 
             return result;

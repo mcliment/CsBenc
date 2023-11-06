@@ -21,7 +21,7 @@ module Base64Checks =
         myEncoder.DecodeBytes(systemEncoder s) = systemDecoder (systemEncoder s)
         |> Prop.trivial (s.Length = 0)
 
-    let endodesAndDecodes (s:array<byte>) = 
+    let encodesAndDecodes (s:array<byte>) = 
         myEncoder.DecodeBytes(myEncoder.Encode(s)) = s 
         |> Prop.trivial (s.Length = 0)
 
@@ -35,4 +35,4 @@ module Base64Checks =
 
     [<Fact>]
     let ``Check that base64 encoding and decoding returns original value`` () =
-        Check.One (config, endodesAndDecodes)
+        Check.One (config, encodesAndDecodes)

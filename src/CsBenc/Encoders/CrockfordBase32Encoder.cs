@@ -8,7 +8,7 @@ namespace CsBenc.Encoders
     /// </summary>
     public class CrockfordBase32Encoder : ChecksumEncoder
     {
-        private readonly static Dictionary<char, byte> _equiv = new Dictionary<char, byte> {
+        private static readonly Dictionary<char, byte> Equiv = new Dictionary<char, byte> {
             { 'I', 1 }, { 'i', 1 }, { 'L', 1 }, { 'l', 1 }, { 'O', 0 }, { 'o', 0 }
         };
 
@@ -48,10 +48,7 @@ namespace CsBenc.Encoders
 
         private static string Translate(string input)
         {
-            var translated = input.Select(c =>
-            {
-                return _equiv.ContainsKey(c) ? (char)_equiv[c] : c;
-            });
+            var translated = input.Select(c => Equiv.TryGetValue(c, out var v) ? (char)v : c);
 
             return new string(translated.ToArray());
         }

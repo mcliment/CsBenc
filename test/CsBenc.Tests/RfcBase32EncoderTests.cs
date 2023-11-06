@@ -6,7 +6,7 @@ namespace CsBenc.Tests
 {
     public class RfcBase32EncoderTests
     {
-        private readonly StringEncoder encoder = Encoder.RfcBase32();
+        private readonly StringEncoder _encoder = Encoder.RfcBase32();
 
         [Theory]
         [InlineData("", "")]
@@ -18,7 +18,7 @@ namespace CsBenc.Tests
         [InlineData("foobar", "MZXW6YTBOI======")]
         public void Encodes_Test_Vectors(string input, string encoded)
         {
-            encoder.Encode(input).ShouldBe(encoded);
+            _encoder.Encode(input).ShouldBe(encoded);
         }
 
         [Theory]
@@ -31,7 +31,7 @@ namespace CsBenc.Tests
         [InlineData("MZXW6YTBOI======", "foobar")]
         public void Decodes_Test_Vectors(string encoded, string output)
         {
-            encoder.Decode(encoded).ShouldBe(output);
+            _encoder.Decode(encoded).ShouldBe(output);
         }
     }
 }

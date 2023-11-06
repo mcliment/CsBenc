@@ -1,4 +1,5 @@
-﻿using CsBenc.Encoders;
+﻿using System;
+using CsBenc.Encoders;
 using Shouldly;
 using Xunit;
 
@@ -6,12 +7,12 @@ namespace CsBenc.Tests
 {
     public class RfcBase64EncoderTests
     {
-        private readonly StringEncoder encoder = Encoder.RfcBase64();
+        private readonly StringEncoder _encoder = Encoder.RfcBase64();
 
         [Fact]
         public void Encodes_Empty_Array()
         {
-            encoder.Encode(new byte[] { }).ShouldBe("");
+            _encoder.Encode(Array.Empty<byte>()).ShouldBe("");
         }
 
         [Theory]
@@ -24,7 +25,7 @@ namespace CsBenc.Tests
         [InlineData("foobar", "Zm9vYmFy")]
         public void Encodes_Test_Vectors(string input, string encoded)
         {
-            encoder.Encode(input).ShouldBe(encoded);
+            _encoder.Encode(input).ShouldBe(encoded);
         }
 
         [Theory]
@@ -37,7 +38,7 @@ namespace CsBenc.Tests
         [InlineData("fóóbàr", "ZsOzw7Niw6By")]
         public void Encodes_Test_Vectors_UTF8(string input, string encoded)
         {
-            encoder.Encode(input).ShouldBe(encoded);
+            _encoder.Encode(input).ShouldBe(encoded);
         }
 
         [Theory]
@@ -50,7 +51,7 @@ namespace CsBenc.Tests
         [InlineData("Zm9vYmFy", "foobar")]
         public void Decodes_Test_Vectors(string encoded, string output)
         {
-            encoder.Decode(encoded).ShouldBe(output);
+            _encoder.Decode(encoded).ShouldBe(output);
         }
 
         [Theory]
@@ -63,7 +64,7 @@ namespace CsBenc.Tests
         [InlineData("ZsOzw7Niw6By", "fóóbàr")]
         public void Decodes_Test_Vectors_UTF8(string encoded, string output)
         {
-            encoder.Decode(encoded).ShouldBe(output);
+            _encoder.Decode(encoded).ShouldBe(output);
         }
     }
 }

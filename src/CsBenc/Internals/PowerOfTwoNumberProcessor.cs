@@ -28,9 +28,9 @@ namespace CsBenc.Internals
         {
             ulong result = 0;
 
-            for (var i = 0; i < chunks.Length; i++)
+            foreach (var t in chunks)
             {
-                result = (result << _power) + chunks[i];
+                result = (result << _power) + t;
             }
 
             return result;
@@ -50,7 +50,7 @@ namespace CsBenc.Internals
             while (next > 0)
             {
                 var rem = (byte)(next & divider); // remainder
-                next = next >> _power; // division
+                next >>= _power; // division
 
                 yield return rem;
             }

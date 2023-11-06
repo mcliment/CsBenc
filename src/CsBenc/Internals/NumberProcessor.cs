@@ -11,7 +11,7 @@ namespace CsBenc.Internals
         {
             if (modulo > byte.MaxValue)
             {
-                throw new ArgumentOutOfRangeException("The base or modulo can't be larger than a byte", nameof(modulo));
+                throw new ArgumentOutOfRangeException(nameof(modulo), "The base or modulo can't be larger than a byte");
             }
             
             switch (modulo)

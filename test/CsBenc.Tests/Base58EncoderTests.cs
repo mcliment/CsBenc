@@ -6,7 +6,7 @@ namespace CsBenc.Tests
 {
     public class Base58EncoderTests
     {
-        private readonly SimpleEncoder encoder = Encoder.Base58();
+        private readonly SimpleEncoder _encoder = Encoder.Base58();
 
         [Theory]
         [InlineData(0UL, "1")]
@@ -17,7 +17,7 @@ namespace CsBenc.Tests
         [InlineData(281401388481450UL, "3CSwN61PP")]
         public void Encodes(ulong input, string output)
         {
-            encoder.Encode(input).ShouldBe(output);
+            _encoder.Encode(input).ShouldBe(output);
         }
 
         [Theory]
@@ -29,7 +29,7 @@ namespace CsBenc.Tests
         [InlineData("3CSwN61PP", 281401388481450UL)]
         public void Decodes(string encoded, ulong output)
         {
-            encoder.DecodeLong(encoded).ShouldBe(output);
+            _encoder.DecodeLong(encoded).ShouldBe(output);
         }
 
         [Theory]
@@ -48,7 +48,7 @@ namespace CsBenc.Tests
         [InlineData(new byte[] { 0x00, 0x15, 0x77, 0xAE, 0x26, 0x0E, 0x0D, 0xD1, 0xD3, 0x3B, 0xB6, 0x5B, 0x86, 0x44, 0x2B, 0x59, 0xEA, 0xFB, 0x04, 0xDE, 0x39, 0xEE, 0xAF, 0xD1, 0xCB }, "12xWZZSKrrtFK28YukUjVaMc3f77GYE4CA")]
         public void EncodesBytes(byte[] bytes, string expected)
         {
-            var encoded = encoder.Encode(bytes);
+            var encoded = _encoder.Encode(bytes);
 
             encoded.ShouldBe(expected);
         }
@@ -69,7 +69,7 @@ namespace CsBenc.Tests
         [InlineData(new byte[] { 0x00, 0x15, 0x77, 0xAE, 0x26, 0x0E, 0x0D, 0xD1, 0xD3, 0x3B, 0xB6, 0x5B, 0x86, 0x44, 0x2B, 0x59, 0xEA, 0xFB, 0x04, 0xDE, 0x39, 0xEE, 0xAF, 0xD1, 0xCB }, "12xWZZSKrrtFK28YukUjVaMc3f77GYE4CA")]
         public void DecodesBytes(byte[] bytes, string expected)
         {
-            var decoded = encoder.DecodeBytes(expected);
+            var decoded = _encoder.DecodeBytes(expected);
 
             decoded.ShouldBe(bytes);
         }

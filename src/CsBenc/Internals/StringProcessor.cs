@@ -6,7 +6,7 @@ namespace CsBenc.Internals
 {
     internal class StringProcessor
     {
-        private const int byteSize = 8;
+        private const int ByteSize = 8;
         private readonly int _size;
 
         public StringProcessor(int size)
@@ -42,7 +42,7 @@ namespace CsBenc.Internals
             }
             else
             {
-                var rem = byteSize;
+                var rem = ByteSize;
                 var mask = (1 << _size) - 1;
                 var i = 0;
                 var ch = (int)value[i++];
@@ -63,8 +63,8 @@ namespace CsBenc.Internals
                     }
                     else
                     {
-                        rem = rem + byteSize - _size;
-                        ch = (ch << byteSize) | value[i++];
+                        rem = rem + ByteSize - _size;
+                        ch = (ch << ByteSize) | value[i++];
                     }
 
                     var m = mask << rem;
@@ -102,14 +102,14 @@ namespace CsBenc.Internals
         {
             if (decoded.Length == 0)
             {
-                return new byte[] {};
+                return Array.Empty<byte>();
             }
 
             // TODO :: Get a better approximation
             var result = new byte[decoded.Length];
 
-            var rem = byteSize;
-            var mask = (1 << byteSize) - 1;
+            var rem = ByteSize;
+            var mask = (1 << ByteSize) - 1;
 
             var i = 0;
             int dec;
@@ -139,7 +139,7 @@ namespace CsBenc.Internals
                     result[len] = (byte)ch;
                     len++;
 
-                    rem = byteSize - disp;
+                    rem = ByteSize - disp;
 
                     ch = dec << rem;
                 }

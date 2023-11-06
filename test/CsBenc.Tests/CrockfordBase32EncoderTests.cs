@@ -8,7 +8,7 @@ namespace CsBenc.Tests
 {
     public class CrockfordBase32EncoderTests
     {
-        private readonly ChecksumEncoder encoder = Encoder.CrockfordBase32();
+        private readonly ChecksumEncoder _encoder = Encoder.CrockfordBase32();
 
         [Theory]
         [InlineData(0UL, "0")]
@@ -16,7 +16,7 @@ namespace CsBenc.Tests
         [InlineData(ulong.MaxValue, "FZZZZZZZZZZZZ")]
         public void Encodes(ulong value, string encoded)
         {
-            encoder.Encode(value).ShouldBe(encoded);
+            _encoder.Encode(value).ShouldBe(encoded);
         }
 
         [Theory]
@@ -25,7 +25,7 @@ namespace CsBenc.Tests
         [InlineData(ulong.MaxValue, "FZZZZZZZZZZZZB")]
         public void Encodes_With_Checksum(ulong value, string encoded)
         {
-            encoder.Encode(value, true).ShouldBe(encoded);
+            _encoder.Encode(value, true).ShouldBe(encoded);
         }
 
         [Theory]
@@ -34,7 +34,7 @@ namespace CsBenc.Tests
         [InlineData("FZZZZZZZZZZZZ", ulong.MaxValue)]
         public void Decodes(string encoded, ulong decoded)
         {
-            encoder.DecodeLong(encoded).ShouldBe(decoded);
+            _encoder.DecodeLong(encoded).ShouldBe(decoded);
         }
 
         [Theory]
@@ -42,7 +42,7 @@ namespace CsBenc.Tests
         [InlineData("fzzzzzzzzzzzz", ulong.MaxValue)]
         public void Decodes_Lowercase(string encoded, ulong decoded)
         {
-            encoder.DecodeLong(encoded).ShouldBe(decoded);
+            _encoder.DecodeLong(encoded).ShouldBe(decoded);
         }
 
         [Theory]
@@ -50,7 +50,7 @@ namespace CsBenc.Tests
         [InlineData("FZZ-ZZZ-ZZZ-ZZZZ", ulong.MaxValue)]
         public void Decodes_With_Separator(string encoded, ulong decoded)
         {
-            encoder.DecodeLong(encoded).ShouldBe(decoded);
+            _encoder.DecodeLong(encoded).ShouldBe(decoded);
         }
 
         [Theory]
@@ -58,15 +58,15 @@ namespace CsBenc.Tests
         [InlineData("FZZZZZZZZZZZZB", ulong.MaxValue)]
         public void Decodes_With_Checksum(string encoded, ulong decoded)
         {
-            encoder.DecodeLong(encoded, true).ShouldBe(decoded);
+            _encoder.DecodeLong(encoded, true).ShouldBe(decoded);
         }
 
         [Theory]
         [MemberData(nameof(GetRandom), parameters: 10)]
         public void Random_Invert(ulong input)
         {
-            var encoded = encoder.Encode(input);
-            var decoded = encoder.DecodeLong(encoded);
+            var encoded = _encoder.Encode(input);
+            var decoded = _encoder.DecodeLong(encoded);
 
             input.ShouldBe(decoded);
         }
