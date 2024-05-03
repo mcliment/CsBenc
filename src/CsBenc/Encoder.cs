@@ -55,7 +55,10 @@ namespace CsBenc
         /// <returns>A <see cref="StringEncoder"/> configured for RFC compliant Base64.</returns>
         public static StringEncoder RfcBase64()
         {
-            return new StringEncoder("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", '=');
+            return new StringEncoder(
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
+                '='
+            );
         }
 
         /// <summary>
@@ -64,7 +67,10 @@ namespace CsBenc
         /// <returns>A <see cref="StringEncoder"/> configured for RFC compliant Base64 (URL variant).</returns>
         public static StringEncoder RfcBase64Url()
         {
-            return new StringEncoder("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_", '=');
+            return new StringEncoder(
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_",
+                '='
+            );
         }
     }
 }
