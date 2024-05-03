@@ -1,7 +1,7 @@
-﻿using CsBenc.Encoders;
-using Shouldly;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using CsBenc.Encoders;
+using Shouldly;
 using Xunit;
 
 namespace CsBenc.Tests

@@ -7,7 +7,8 @@ namespace CsBenc.Internals
     {
         private readonly int _power;
 
-        public PowerOfTwoNumberProcessor(int power, int modulo) : base(modulo)
+        public PowerOfTwoNumberProcessor(int power, int modulo)
+            : base(modulo)
         {
             _power = power;
         }

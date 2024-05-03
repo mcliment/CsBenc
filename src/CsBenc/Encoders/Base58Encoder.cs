@@ -8,7 +8,8 @@ namespace CsBenc.Encoders
     {
         private readonly string _alpha;
 
-        public Base58Encoder(string alphabet) : base(alphabet)
+        public Base58Encoder(string alphabet)
+            : base(alphabet)
         {
             _alpha = alphabet;
         }
@@ -20,8 +21,10 @@ namespace CsBenc.Encoders
 
             foreach (var n in input)
             {
-                if (n == 0) leadingZeroes++;
-                else break;
+                if (n == 0)
+                    leadingZeroes++;
+                else
+                    break;
             }
 
             var resultSize = input.Length * 137 / 100 + 1; // log(256) / log(58) rounded up
@@ -33,10 +36,14 @@ namespace CsBenc.Encoders
                 var i = 0;
 
                 // Large integer division algorithm (adapted from base58.cpp)
-                for (var resultPos = resultSize; (carry != 0 || i < length) && resultPos > 0; resultPos--, i++)
+                for (
+                    var resultPos = resultSize;
+                    (carry != 0 || i < length) && resultPos > 0;
+                    resultPos--, i++
+                )
                 {
                     carry = carry + 256 * result[resultPos - 1];
-                    result[resultPos - 1] = (byte) (carry % 58);
+                    result[resultPos - 1] = (byte)(carry % 58);
                     carry = carry / 58;
                 }
 
@@ -52,7 +59,9 @@ namespace CsBenc.Encoders
             }
 
             // Build result
-            var encoded = new StringBuilder(leadingZeroes + resultSize - leadingResultZeroes /* known size */);
+            var encoded = new StringBuilder(
+                leadingZeroes + resultSize - leadingResultZeroes /* known size */
+            );
 
             encoded.Append(new string('1', leadingZeroes));
 
@@ -70,8 +79,10 @@ namespace CsBenc.Encoders
 
             for (var i = 0; i < encoded.Length; i++)
             {
-                if (encoded[i] == '1') zeroes++;
-                else break;
+                if (encoded[i] == '1')
+                    zeroes++;
+                else
+                    break;
             }
 
             var resultSize = encoded.Length * 733 / 1000 + 1; // log(58) / log(256) rounded up
@@ -82,14 +93,15 @@ namespace CsBenc.Encoders
                 var curr = encoded[i];
 
                 var ch = _alpha.IndexOf(curr);
-                if (ch < 0) throw new Exception($"Invalid character found in encoded string: {curr}");
+                if (ch < 0)
+                    throw new Exception($"Invalid character found in encoded string: {curr}");
 
                 var carry = ch;
 
                 for (var pos = resultChars.Length; pos > zeroes; pos--)
                 {
                     carry = carry + 58 * resultChars[pos - 1];
-                    resultChars[pos - 1] = (byte) (carry % 256);
+                    resultChars[pos - 1] = (byte)(carry % 256);
                     carry = carry / 256;
                 }
 
@@ -99,8 +111,10 @@ namespace CsBenc.Encoders
             var trailingZeroes = 0;
             foreach (var ch in resultChars)
             {
-                if (ch == 0) trailingZeroes++;
-                else break;
+                if (ch == 0)
+                    trailingZeroes++;
+                else
+                    break;
             }
 
             var bytes = new byte[zeroes + resultChars.Length - trailingZeroes];

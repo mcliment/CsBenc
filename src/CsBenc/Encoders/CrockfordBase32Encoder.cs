@@ -8,16 +8,21 @@ namespace CsBenc.Encoders
     /// </summary>
     public class CrockfordBase32Encoder : ChecksumEncoder
     {
-        private static readonly Dictionary<char, byte> Equiv = new Dictionary<char, byte> {
-            { 'I', 1 }, { 'i', 1 }, { 'L', 1 }, { 'l', 1 }, { 'O', 0 }, { 'o', 0 }
+        private static readonly Dictionary<char, byte> Equiv = new Dictionary<char, byte>
+        {
+            { 'I', 1 },
+            { 'i', 1 },
+            { 'L', 1 },
+            { 'l', 1 },
+            { 'O', 0 },
+            { 'o', 0 }
         };
 
         /// <summary>
         /// Creates a new instance of the Crockford's Base32 encoder.
         /// </summary>
-        public CrockfordBase32Encoder() : base("0123456789ABCDEFGHJKMNPQRSTVWXYZ", "*~$=U")
-        {
-        }
+        public CrockfordBase32Encoder()
+            : base("0123456789ABCDEFGHJKMNPQRSTVWXYZ", "*~$=U") { }
 
         /// <summary>
         /// Decodes an encoded string as a number (with an optional checksum).
