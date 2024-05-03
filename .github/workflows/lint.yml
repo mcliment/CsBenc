@@ -23,18 +23,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: csharp-lint
+          author: csharpier[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           commit-message: "[CSharpier] Apply linters automatic fixes"
           title: "[CSharpier] Apply linters automatic fixes"
           labels: bot
-
-      - name: Create PR output
-        run: |
-          echo "PR Number - ${{ steps.cpr.outputs.pull-request-number }}"
-          echo "PR URL - ${{ steps.cpr.outputs.pull-request-url }}"
-
-      - name: Commit and push applied linter fixes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "[CSharpier] Apply linters fixes"
-          commit_user_name: csharpier-bot
-          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
