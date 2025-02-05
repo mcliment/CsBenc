@@ -83,14 +83,14 @@ namespace CsBenc.Internals
             var size = cs.Length;
             var newSize = size;
 
-            while(newSize * _size % 8 != 0)
+            while (newSize * _size % 8 != 0)
             {
                 newSize++;
             }
 
             Array.Resize(ref cs, newSize);
 
-            for(var i = size; i < newSize; i++)
+            for (var i = size; i < newSize; i++)
             {
                 cs[i] = pad;
             }

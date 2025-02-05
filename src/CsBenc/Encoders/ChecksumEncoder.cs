@@ -16,7 +16,8 @@ namespace CsBenc.Encoders
         /// </summary>
         /// <param name="alphabet">The alphabet to use for encoding. Limited to 255 characters</param>
         /// <param name="checksums">Extension to the alphabet for the checksums</param>
-        public ChecksumEncoder(string alphabet, string checksums) : base(alphabet)
+        public ChecksumEncoder(string alphabet, string checksums)
+            : base(alphabet)
         {
             _checksums = checksums;
             _checksumBase = alphabet.Length + _checksums.Length;
@@ -68,7 +69,8 @@ namespace CsBenc.Encoders
         /// <returns>Decoded numeric value</returns>
         public virtual ulong DecodeLong(string encoded, bool checksum)
         {
-            var chunks = GetChunks(checksum ? encoded.Substring(0, encoded.Length - 1) : encoded).ToArray();
+            var chunks = GetChunks(checksum ? encoded.Substring(0, encoded.Length - 1) : encoded)
+                .ToArray();
             var result = Processor.CombineLong(chunks);
 
             if (checksum)
@@ -89,7 +91,8 @@ namespace CsBenc.Encoders
             var checksum = (byte)(number % (ulong)_checksumBase);
             var alphabetSize = Alphabet.Length;
 
-            var checksumChar = checksum > alphabetSize ? _checksums[alphabetSize - checksum] : Alphabet[checksum];
+            var checksumChar =
+                checksum > alphabetSize ? _checksums[alphabetSize - checksum] : Alphabet[checksum];
 
             return checksumChar;
         }

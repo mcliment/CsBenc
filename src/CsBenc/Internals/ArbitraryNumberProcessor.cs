@@ -14,8 +14,8 @@ namespace CsBenc.Internals
         public ArbitraryNumberProcessor(int modulo)
         {
             _modulo = modulo;
-            _expandFactor = (int) Math.Ceiling(Math.Log(256) * 100 / Math.Log(_modulo));
-            _shrinkFactor = (int) Math.Ceiling(Math.Log(_modulo) * 1000 / Math.Log(256));
+            _expandFactor = (int)Math.Ceiling(Math.Log(256) * 100 / Math.Log(_modulo));
+            _shrinkFactor = (int)Math.Ceiling(Math.Log(_modulo) * 1000 / Math.Log(256));
         }
 
         public virtual IEnumerable<byte> Chunk(ulong number)
@@ -24,7 +24,7 @@ namespace CsBenc.Internals
             {
                 return new byte[] { 0 };
             }
-            
+
             var chunks = YieldChunks(number);
 
             return chunks.Reverse();
@@ -51,7 +51,11 @@ namespace CsBenc.Internals
                 var i = 0;
 
                 // Large integer division algorithm (adapted from base58.cpp)
-                for (var resultPos = resultSize; (carry != 0 || i < len) && resultPos > 0; resultPos--, i++)
+                for (
+                    var resultPos = resultSize;
+                    (carry != 0 || i < len) && resultPos > 0;
+                    resultPos--, i++
+                )
                 {
                     carry = carry + 256 * result[resultPos - 1];
                     result[resultPos - 1] = (byte)(carry % _modulo);
@@ -111,8 +115,10 @@ namespace CsBenc.Internals
             var trailingZeroes = 0;
             foreach (var ch in resultChars)
             {
-                if (ch == 0) trailingZeroes++;
-                else break;
+                if (ch == 0)
+                    trailingZeroes++;
+                else
+                    break;
             }
 
             var bytes = new byte[startOffset + resultChars.Length - trailingZeroes];
