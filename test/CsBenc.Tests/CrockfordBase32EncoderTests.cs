@@ -79,7 +79,7 @@ namespace CsBenc.Tests
             {
                 var buffer = new byte[8];
                 random.NextBytes(buffer);
-                yield return new object[] { BitConverter.ToUInt64(buffer, 0) };
+                yield return [BitConverter.ToUInt64(buffer, 0)];
             }
         }
     }

@@ -9,7 +9,7 @@ namespace CsBenc.Internals
 
         public NumberProcessor(int modulo)
         {
-            if (modulo > byte.MaxValue)
+            if (modulo > byte.MaxValue + 1)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(modulo),

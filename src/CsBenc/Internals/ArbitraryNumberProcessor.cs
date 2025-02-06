@@ -22,7 +22,7 @@ namespace CsBenc.Internals
         {
             if (number == 0)
             {
-                return new byte[] { 0 };
+                return [0];
             }
 
             var chunks = YieldChunks(number);
@@ -37,7 +37,7 @@ namespace CsBenc.Internals
             if (length == 0)
             {
                 endOffset = 0;
-                return new byte[] { };
+                return [];
             }
 
             var len = 0;

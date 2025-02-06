@@ -1,5 +1,4 @@
-﻿using System;
-using CsBenc.Encoders;
+﻿using CsBenc.Encoders;
 using Shouldly;
 using Xunit;
 
@@ -12,7 +11,7 @@ namespace CsBenc.Tests
         [Fact]
         public void Encodes_Empty_Array()
         {
-            _encoder.Encode(Array.Empty<byte>()).ShouldBe("");
+            _encoder.Encode([]).ShouldBe("");
         }
 
         [Theory]

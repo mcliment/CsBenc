@@ -18,7 +18,7 @@ namespace CsBenc.Internals
         {
             if (string.IsNullOrEmpty(value))
             {
-                return Enumerable.Empty<byte>();
+                return [];
             }
 
             return Chunk(System.Text.Encoding.UTF8.GetBytes(value));
@@ -34,7 +34,7 @@ namespace CsBenc.Internals
             // Simple case for base16 (no padding)
             if (_size == 4)
             {
-                foreach (byte ch in value)
+                foreach (var ch in value)
                 {
                     yield return (byte)(ch >> 4);
                     yield return (byte)(ch & 0xf);
@@ -102,7 +102,7 @@ namespace CsBenc.Internals
         {
             if (decoded.Length == 0)
             {
-                return Array.Empty<byte>();
+                return [];
             }
 
             // TODO :: Get a better approximation

@@ -6,7 +6,7 @@ open global.Xunit
 module Base58Checks =
 
     let myEncoder = CsBenc.Encoder.Base58()
-    let config = { Config.QuickThrowOnFailure with EndSize = 1000 }
+    let config = Config.QuickThrowOnFailure.WithEndSize(1000)
 
     let encodesAndDecodes (s:uint64) = 
         myEncoder.DecodeLong(myEncoder.Encode(s)) = s

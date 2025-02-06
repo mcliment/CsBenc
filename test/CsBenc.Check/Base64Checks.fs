@@ -1,6 +1,7 @@
 ﻿namespace Checks
 
 open FsCheck
+open FsCheck.FSharp
 open global.Xunit
 open System
 
@@ -11,7 +12,7 @@ module Base64Checks =
 
     let myEncoder = CsBenc.Encoder.RfcBase64()
 
-    let config = { Config.QuickThrowOnFailure with EndSize = 1000 }
+    let config = Config.QuickThrowOnFailure.WithEndSize(1000)
 
     let encodesAsSystem (s:array<byte>) = 
         myEncoder.Encode(s) = systemEncoder s

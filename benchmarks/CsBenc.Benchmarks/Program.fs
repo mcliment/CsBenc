@@ -8,7 +8,7 @@ open BenchmarkDotNet.Running
 type Base64EncodingComparison () =
     let N = 10000
 
-    let base64net = System.Convert.ToBase64String
+    let base64net = Convert.ToBase64String
     let base64encoder = CsBenc.Encoder.RfcBase64()
 
     let mutable data = Array.zeroCreate<byte> N
@@ -16,7 +16,7 @@ type Base64EncodingComparison () =
     [<GlobalSetup>]
     member self.SetupData () =
         data <- Array.zeroCreate<byte> N
-        (new Random(42)).NextBytes(data)
+        Random(42).NextBytes(data)
 
     [<Benchmark(Baseline = true)>]
     member self.NetBase64 () = base64net(data)
@@ -31,7 +31,7 @@ type Base64EncodingComparison () =
 type Base64DecodingComparison () =
     let N = 10000
 
-    let base64net = System.Convert.FromBase64String
+    let base64net = Convert.FromBase64String
     let base64decoder = CsBenc.Encoder.RfcBase64().DecodeBytes
 
     let mutable encoded = ""
@@ -39,8 +39,8 @@ type Base64DecodingComparison () =
     [<GlobalSetup>]
     member self.SetupData () =
         let mutable data = Array.zeroCreate<byte> N
-        (new Random(42)).NextBytes(data)
-        encoded <- System.Convert.ToBase64String(data)
+        Random(42).NextBytes(data)
+        encoded <- Convert.ToBase64String(data)
 
     [<Benchmark(Baseline = true)>]
     member self.NetBase64 () = base64net(encoded)
