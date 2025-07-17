@@ -21,17 +21,20 @@ jobs:
       with:
           distribution: 'zulu'
           java-version: '11'
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v4
+
     - name: Cache SonarCloud packages
       uses: actions/cache@v3
       with:
           path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+
     - name: Cache SonarCloud scanner
       id: cache-sonar-scanner
       uses: actions/cache@v3
@@ -39,22 +42,24 @@ jobs:
           path: .\.sonar\scanner
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
+
     - name: Install SonarCloud scanner
       if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-      shell: powershell
-      run: |
-          New-Item -Path .\.sonar\scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+      shell: bash
+      run: dotnet tool install --global dotnet-sonarscanner
+
     - name: Install dependencies
       run: dotnet restore
+
     - name: Build and Analyze
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      shell: powershell
+      shell: bash
       run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"mcliment_CsBenc" /o:"mcliment" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build --configuration Release --no-restore
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet sonarscanner begin /k:"mcliment_CsBenc" /o:"mcliment" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet build --configuration Release --no-restore --no-incremental
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
     - name: Test
       run: dotnet test --no-restore --verbosity normal
