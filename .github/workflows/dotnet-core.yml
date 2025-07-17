@@ -45,7 +45,7 @@ jobs:
 
     - name: Install SonarCloud scanner
       if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-      shell: bash
+      shell: powershell
       run: dotnet tool install --global dotnet-sonarscanner
 
     - name: Install dependencies
@@ -55,7 +55,7 @@ jobs:
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      shell: bash
+      shell: powershell
       run: |
           dotnet sonarscanner begin /k:"mcliment_CsBenc" /o:"mcliment" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
           dotnet build --configuration Release --no-restore --no-incremental
