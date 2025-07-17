@@ -6,19 +6,22 @@
       "version": "4.0.1",
       "commands": [
         "csmacnz.Coveralls"
-      ]
+      ],
+      "rollForward": false
     },
     "dotnet-reportgenerator-globaltool": {
-      "version": "5.1.18",
+      "version": "5.4.9",
       "commands": [
         "reportgenerator"
-      ]
+      ],
+      "rollForward": false
     },
     "csharpier": {
-      "version": "0.28.2",
+      "version": "1.0.3",
       "commands": [
-        "dotnet-csharpier"
-      ]
+        "csharpier"
+      ],
+      "rollForward": false
     }
   }
 }
